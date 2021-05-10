@@ -1,0 +1,756 @@
+SQL> select * from projectmanagers
+  2  ;
+
+MANAGER_ID      FIRSTNAME            LASTNAME
+--------------- -------------------- ---------------
+john123         john                 ambrose
+da_vid          david                rose
+joce123         jocelyn
+kat4all         kat                  graham
+harryp          harry                potter
+hlucy           lucy                 hale
+b_bennet        bonnie               bennet
+
+7 rows selected.
+
+SQL> select * from managerprofile;
+
+no rows selected
+
+SQL>  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber);
+Enter value for manager_id: john123
+Enter value for companyname: warner bros
+Enter value for designation: assistant hr
+Enter value for phonenumber: 123456789
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('john123', 'warner bros', 'assistant hr', 123456789)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: da_vid
+Enter value for companyname: fission labs
+Enter value for designation: big data lead
+Enter value for phonenumber: 2345678901
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('da_vid', 'fission labs', 'big data lead', 2345678901)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: joce123
+Enter value for companyname: AtoZ Store
+Enter value for designation: marketing manager
+Enter value for phonenumber: 3456789120
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('joce123', 'AtoZ Store', 'marketing manager', 3456789120)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: kat4all
+Enter value for companyname: facebook
+Enter value for designation: media lead
+Enter value for phonenumber: 1357924680
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('kat4all', 'facebook', 'media lead', 1357924680)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: harryp
+Enter value for companyname: bookworld
+Enter value for designation: manager
+Enter value for phonenumber: 2468013579
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('harryp', 'bookworld', 'manager', 2468013579)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: hlucy
+Enter value for companyname: scarlet magazine
+Enter value for designation: ad sales lead
+Enter value for phonenumber: 1111122222
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('hlucy', 'scarlet magazine', 'ad sales lead', 1111122222)
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: b_bennet
+Enter value for companyname: google
+Enter value for designation: QandA Lead
+Enter value for phonenumber: 2222233333
+old   1:  insert into managerprofile values('&manager_id', '&companyname', '&designation', &phonenumber)
+new   1:  insert into managerprofile values('b_bennet', 'google', 'QandA Lead', 2222233333)
+
+1 row created.
+
+SQL> commit
+  2  ;
+
+Commit complete.
+
+SQL> select * from managerprofile;
+
+MANAGER_ID      COMPANYNAME          DESIGNATION                    PHONENUMBER
+--------------- -------------------- ------------------------------ -----------
+john123         warner bros          assistant hr                     123456789
+da_vid          fission labs         big data lead                   2345678901
+joce123         AtoZ Store           marketing manager               3456789120
+kat4all         facebook             media lead                      1357924680
+harryp          bookworld            manager                         2468013579
+hlucy           scarlet magazine     ad sales lead                   1111122222
+b_bennet        google               QandA Lead                      2222233333
+
+7 rows selected.
+
+SQL> insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required');
+Enter value for manager_id: john123
+Enter value for internship_id: 101
+Enter value for position: assistant director
+Enter value for salary: 8000
+Enter value for location: mumbai
+Enter value for skills_required: videography, photography
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('john123', 101, 'assistant director', 8000, 'mumbai', 'videography, photography')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: da_vid
+Enter value for internship_id: 102
+Enter value for position: data analyst
+Enter value for salary: 12000
+Enter value for location: banglore
+Enter value for skills_required: data science, python
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('da_vid', 102, 'data analyst', 12000, 'banglore', 'data science, python')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: joce123
+Enter value for internship_id: 103
+Enter value for position: salesperson
+Enter value for salary: 4000
+Enter value for location: gujarat
+Enter value for skills_required: communication, patience
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('joce123', 103, 'salesperson', 4000, 'gujarat', 'communication, patience')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: kat4all
+Enter value for internship_id: 109
+Enter value for position: content writer
+Enter value for salary: 7000
+Enter value for location: hyderabad
+Enter value for skills_required: communication, writing skills
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('kat4all', 109, 'content writer', 7000, 'hyderabad', 'communication, writing skills')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: harryp
+Enter value for internship_id: 104
+Enter value for position: receptionist
+Enter value for salary: 6000
+Enter value for location: kolkata
+Enter value for skills_required: communication skills
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('harryp', 104, 'receptionist', 6000, 'kolkata', 'communication skills')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: hlucy
+Enter value for internship_id: 105
+Enter value for position: assistant
+Enter value for salary: 4000
+Enter value for location: elmdale
+Enter value for skills_required: passion to learn, patience
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('hlucy', 105, 'assistant', 4000, 'elmdale', 'passion to learn, patience')
+
+1 row created.
+
+SQL> /
+Enter value for manager_id: b_bennet
+Enter value for internship_id: 106
+Enter value for position: software testing
+Enter value for salary: 9000
+Enter value for location: hyderabad
+Enter value for skills_required: java, python
+old   1: insert into internships values('&manager_id', &internship_id, '&position', &salary, '&location', '&skills_required')
+new   1: insert into internships values('b_bennet', 106, 'software testing', 9000, 'hyderabad', 'java, python')
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from internships;
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+john123                   101 assistant director                   8000
+mumbai          videography, photography
+
+da_vid                    102 data analyst                        12000
+banglore        data science, python
+
+joce123                   103 salesperson                          4000
+gujarat         communication, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+kat4all                   109 content writer                       7000
+hyderabad       communication, writing skills
+
+harryp                    104 receptionist                         6000
+kolkata         communication skills
+
+hlucy                     105 assistant                            4000
+elmdale         passion to learn, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+b_bennet                  106 software testing                     9000
+hyderabad       java, python
+
+
+7 rows selected.
+
+SQL> select * from internships;
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+john123                   101 assistant director                   8000
+mumbai          videography, photography
+
+da_vid                    102 data analyst                        12000
+banglore        data science, python
+
+joce123                   103 salesperson                          4000
+gujarat         communication, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+kat4all                   109 content writer                       7000
+hyderabad       communication, writing skills
+
+harryp                    104 receptionist                         6000
+kolkata         communication skills
+
+hlucy                     105 assistant                            4000
+elmdale         passion to learn, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+b_bennet                  106 software testing                     9000
+hyderabad       java, python
+
+
+7 rows selected.
+
+SQL> select * from internships;
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+john123                   101 assistant director                   8000
+mumbai          videography, photography
+
+da_vid                    102 data analyst                        12000
+banglore        data science, python
+
+joce123                   103 salesperson                          4000
+gujarat         communication, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+kat4all                   109 content writer                       7000
+hyderabad       communication, writing skills
+
+harryp                    104 receptionist                         6000
+kolkata         communication skills
+
+hlucy                     105 assistant                            4000
+elmdale         passion to learn, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+b_bennet                  106 software testing                     9000
+hyderabad       java, python
+
+
+7 rows selected.
+
+SQL> select * from internships;
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+john123                   101 assistant director                   8000
+mumbai          videography, photography
+
+da_vid                    102 data analyst                        12000
+banglore        data science, python
+
+joce123                   103 salesperson                          4000
+gujarat         communication, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+kat4all                   109 content writer                       7000
+hyderabad       communication, writing skills
+
+harryp                    104 receptionist                         6000
+kolkata         communication skills
+
+hlucy                     105 assistant                            4000
+elmdale         passion to learn, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+b_bennet                  106 software testing                     9000
+hyderabad       java, python
+
+
+7 rows selected.
+
+SQL> insert into students values('&student_id', '&firstname', '&lastname');
+Enter value for student_id: pk123
+Enter value for firstname: peter
+Enter value for lastname: kavinsky
+old   1: insert into students values('&student_id', '&firstname', '&lastname')
+new   1: insert into students values('pk123', 'peter', 'kavinsky')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: laraj
+Enter value for firstname: lara
+Enter value for lastname: jean
+old   1: insert into students values('&student_id', '&firstname', '&lastname')
+new   1: insert into students values('laraj', 'lara', 'jean')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: knowitall
+Enter value for firstname: hermione
+Enter value for lastname: granger
+old   1: insert into students values('&student_id', '&firstname', '&lastname')
+new   1: insert into students values('knowitall', 'hermione', 'granger')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: parth4u
+Enter value for firstname: parth
+Enter value for lastname: samthaan
+old   1: insert into students values('&student_id', '&firstname', '&lastname')
+new   1: insert into students values('parth4u', 'parth', 'samthaan')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: emmaw
+Enter value for firstname: emma
+Enter value for lastname: watson
+old   1: insert into students values('&student_id', '&firstname', '&lastname')
+new   1: insert into students values('emmaw', 'emma', 'watson')
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from students;
+
+STUDENT_ID      FIRSTNAME            LASTNAME
+--------------- -------------------- ---------------
+pk123           peter                kavinsky
+laraj           lara                 jean
+knowitall       hermione             granger
+parth4u         parth                samthaan
+emmaw           emma                 watson
+
+SQL> select * from students;
+
+STUDENT_ID      FIRSTNAME            LASTNAME
+--------------- -------------------- ---------------
+pk123           peter                kavinsky
+laraj           lara                 jean
+knowitall       hermione             granger
+parth4u         parth                samthaan
+emmaw           emma                 watson
+
+SQL> select * from internships;
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+john123                   101 assistant director                   8000
+mumbai          videography, photography
+
+da_vid                    102 data analyst                        12000
+banglore        data science, python
+
+joce123                   103 salesperson                          4000
+gujarat         communication, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+kat4all                   109 content writer                       7000
+hyderabad       communication, writing skills
+
+harryp                    104 receptionist                         6000
+kolkata         communication skills
+
+hlucy                     105 assistant                            4000
+elmdale         passion to learn, patience
+
+
+MANAGER_ID      INTERNSHIP_ID POSITION                           SALARY
+--------------- ------------- ------------------------------ ----------
+LOCATION        SKILLS_REQUIRED
+--------------- --------------------------------------------------
+b_bennet                  106 software testing                     9000
+hyderabad       java, python
+
+
+7 rows selected.
+
+SQL> select * from students;
+
+STUDENT_ID      FIRSTNAME            LASTNAME
+--------------- -------------------- ---------------
+pk123           peter                kavinsky
+laraj           lara                 jean
+knowitall       hermione             granger
+parth4u         parth                samthaan
+emmaw           emma                 watson
+
+SQL> insert into studentprofile values('&student_id', &dob, '&collegename', '&skills', &phonenumber, &cgpa);
+Enter value for student_id: pk123
+Enter value for dob: '01-jan-2001'
+Enter value for collegename: yale university
+Enter value for skills: photography, videography
+Enter value for phonenumber: 1231231231
+Enter value for cgpa: 8.7
+old   1: insert into studentprofile values('&student_id', &dob, '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('pk123', '01-jan-2001', 'yale university', 'photography, videography', 1231231231, 8.7)
+
+1 row created.
+
+SQL> insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa);
+Enter value for student_id: pk123
+Enter value for dob: 01-jan-2001
+Enter value for collegename: yale university
+Enter value for skills: photography, videography
+Enter value for phonenumber: 1231231231
+Enter value for cgpa: 8.7
+old   1: insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('pk123', '01-jan-2001', 'yale university', 'photography, videography', 1231231231, 8.7)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: laraj
+Enter value for dob: 02-feb-2002
+Enter value for collegename: cbit
+Enter value for skills: writing skills, communication
+Enter value for phonenumber: 4564564564
+Enter value for cgpa: 8.3
+old   1: insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('laraj', '02-feb-2002', 'cbit', 'writing skills, communication', 4564564564, 8.3)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: knowitall
+Enter value for dob: 03-mar-2000
+Enter value for collegename: harvard
+Enter value for skills: python, datascience
+Enter value for phonenumber: 3453453453
+Enter value for cgpa: 9.6
+old   1: insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('knowitall', '03-mar-2000', 'harvard', 'python, datascience', 3453453453, 9.6)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: parth4u
+Enter value for dob: 11-mar-2000
+Enter value for collegename: iit roorkee
+Enter value for skills: python, java
+Enter value for phonenumber: 7897897897
+Enter value for cgpa: 9.5
+old   1: insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('parth4u', '11-mar-2000', 'iit roorkee', 'python, java', 7897897897, 9.5)
+
+1 row created.
+
+SQL> /
+Enter value for student_id: emmaw
+Enter value for dob: 04-apr-2002
+Enter value for collegename: stanford
+Enter value for skills: communication
+Enter value for phonenumber: 1234123412
+Enter value for cgpa: 8.7
+old   1: insert into studentprofile values('&student_id', '&dob', '&collegename', '&skills', &phonenumber, &cgpa)
+new   1: insert into studentprofile values('emmaw', '04-apr-2002', 'stanford', 'communication', 1234123412, 8.7)
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from studentprofile;
+
+STUDENT_ID      DOB       COLLEGENAME
+--------------- --------- -------------------------
+SKILLS                                             PHONENUMBER       CGPA
+-------------------------------------------------- ----------- ----------
+pk123           01-JAN-01 yale university
+photography, videography                            1231231231          9
+
+pk123           01-JAN-01 yale university
+photography, videography                            1231231231          9
+
+laraj           02-FEB-02 cbit
+writing skills, communication                       4564564564          8
+
+
+STUDENT_ID      DOB       COLLEGENAME
+--------------- --------- -------------------------
+SKILLS                                             PHONENUMBER       CGPA
+-------------------------------------------------- ----------- ----------
+knowitall       03-MAR-00 harvard
+python, datascience                                 3453453453         10
+
+parth4u         11-MAR-00 iit roorkee
+python, java                                        7897897897         10
+
+emmaw           04-APR-02 stanford
+communication                                       1234123412          9
+
+
+6 rows selected.
+
+SQL> insert into internshipsapplied values('&student_id', &internship_id, 'no');
+Enter value for student_id: pk123
+Enter value for internship_id: 101
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('pk123', 101, 'no')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: laraj
+Enter value for internship_id: 109
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('laraj', 109, 'no')
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+
+SQL> delete from studentprofile where student_id='pk123';
+
+2 rows deleted.
+
+SQL> alter table studentprofile add CONSTRAINT pkey_studentprofile_sid PRIMARY KEY (student_id);
+
+Table altered.
+
+SQL> insert into studentprofile values('pk123', '01-jan-2001', 'yale university', 'photography, videography', 1231231231, 8.7);
+
+1 row created.
+
+SQL> select * from studentprofile;
+
+STUDENT_ID      DOB       COLLEGENAME
+--------------- --------- -------------------------
+SKILLS                                             PHONENUMBER       CGPA
+-------------------------------------------------- ----------- ----------
+laraj           02-FEB-02 cbit
+writing skills, communication                       4564564564
+        8
+
+knowitall       03-MAR-00 harvard
+python, datascience                                 3453453453         10
+
+parth4u         11-MAR-00 iit roorkee
+python, java                                        7897897897         10
+
+
+STUDENT_ID      DOB       COLLEGENAME
+--------------- --------- -------------------------
+SKILLS                                             PHONENUMBER       CGPA
+-------------------------------------------------- ----------- ----------
+emmaw           04-APR-02 stanford
+communication                                       1234123412
+        9
+
+pk123           01-JAN-01 yale university
+photography, videography                            1231231231
+        9
+
+
+SQL> insert into internshipsapplied values('&student_id', &internship_id, 'no');
+Enter value for student_id: l
+Enter value for internship_id: l
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('l', l, 'no')
+insert into internshipsapplied values('l', l, 'no')
+                                           *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> /
+Enter value for student_id: knowitall
+Enter value for internship_id: 102
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('knowitall', 102, 'no')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: parth4u
+Enter value for internship_id: 106
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('parth4u', 106, 'no')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: emmaw
+Enter value for internship_id: 103
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('emmaw', 103, 'no')
+
+1 row created.
+
+SQL> /
+Enter value for student_id: emmaw
+Enter value for internship_id: 104
+old   1: insert into internshipsapplied values('&student_id', &internship_id, 'no')
+new   1: insert into internshipsapplied values('emmaw', 104, 'no')
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from internshipsapplied;
+
+STUDENT_ID      INTERNSHIP_ID SEL
+--------------- ------------- ---
+pk123                     101 no
+laraj                     109 no
+knowitall                 102 no
+parth4u                   106 no
+emmaw                     103 no
+emmaw                     104 no
+
+6 rows selected.
+
+SQL> desc projectmanagers;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MANAGER_ID                                NOT NULL VARCHAR2(15)
+ FIRSTNAME                                 NOT NULL VARCHAR2(20)
+ LASTNAME                                           VARCHAR2(15)
+
+SQL> desc managerprofile;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MANAGER_ID                                NOT NULL VARCHAR2(15)
+ COMPANYNAME                               NOT NULL VARCHAR2(20)
+ DESIGNATION                               NOT NULL VARCHAR2(30)
+ PHONENUMBER                               NOT NULL NUMBER(10)
+
+SQL> desc internships;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MANAGER_ID                                         VARCHAR2(15)
+ INTERNSHIP_ID                             NOT NULL NUMBER(5)
+ POSITION                                  NOT NULL VARCHAR2(30)
+ SALARY                                             NUMBER(8)
+ LOCATION                                  NOT NULL VARCHAR2(15)
+ SKILLS_REQUIRED                           NOT NULL VARCHAR2(50)
+
+SQL> desc students;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL VARCHAR2(15)
+ FIRSTNAME                                 NOT NULL VARCHAR2(20)
+ LASTNAME                                           VARCHAR2(15)
+
+SQL> desc studentprofile;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL VARCHAR2(15)
+ DOB                                       NOT NULL DATE
+ COLLEGENAME                               NOT NULL VARCHAR2(25)
+ SKILLS                                    NOT NULL VARCHAR2(50)
+ PHONENUMBER                               NOT NULL NUMBER(10)
+ CGPA                                      NOT NULL NUMBER(5)
+
+SQL> desc internshipsapplied;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL VARCHAR2(15)
+ INTERNSHIP_ID                             NOT NULL NUMBER(5)
+ SELECTEDYESNO                             NOT NULL VARCHAR2(3)
+
+SQL>
