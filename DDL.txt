@@ -1,0 +1,59 @@
+SQL> create table projectmanagers(
+  2  manager_id varchar2(15),
+  3  firstname varchar2(20) NOT NULL,
+  4  lastname varchar2(15),
+  5  CONSTRAINT pkey_projectmanagers_mid PRIMARY KEY (manager_id));
+
+Table created.
+
+SQL> create table managerprofile(
+  2  manager_id varchar2(15),
+  3  companyname varchar2(20) NOT NULL,
+  4  designation varchar2(20) NOT NULL,
+  5  phonenumber number(10) NOT NULL,
+  6  CONSTRAINT fkey_managerprofile_mid FOREIGN KEY (manager_id) REFERENCES projectmanagers(manager_id) ON DELETE CASCADE);
+
+Table created.
+
+SQL> create table internships(
+  2  manager_id varchar2(15),
+  3  internship_id number(5),
+  4  position varchar2(2) NOT NULL,
+  5  salary number(8),
+  6  location varchar2(15) NOT NULL,
+  7  CONSTRAINT fkey_internships_mid FOREIGN KEY (manager_id) REFERENCES projectmanagers(manager_id) ON DELETE CASCADE,
+  8  CONSTRAINT pkey_internships_iid PRIMARY KEY (internship_id));
+
+Table created.
+
+SQL> create table students(
+  2  student_id varchar2(15),
+  3  firstname varchar2(20) NOT NULL,
+  4  lastname varchar2(15),
+  5  CONSTRAINT pkey_students_sid PRIMARY KEY (student_id));
+
+Table created.
+
+SQL> create table studentprofile(
+  2  student_id varchar2(15),
+  3  dob date NOT NULL,
+  4  collegename varchar2(25) NOT NULL,
+  5  skills varchar2(50) NOT NULL,
+  6  phonenumber number(10) NOT NULL,
+  7  cgpa number(5) NOT NULL,
+  8  CONSTRAINT fkey_studentprofile_sid FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE);
+
+Table created.
+
+
+SQL> create table internshipsapplied(
+  2  student_id varchar2(15),
+  3  internship_id number(5),
+  4  selectedyesno varchar2(3) NOT NULL,
+  5  CONSTRAINT fkey_internshipsapplied_sid FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+  6  CONSTRAINT fkey_internshipsapplied_iid FOREIGN KEY (internship_id) REFERENCES internships(internship_id) ON DELETE CASCADE,
+  7  CONSTRAINT pkey_sid_iid PRIMARY KEY (student_id, internship_id));
+
+Table created.
+
+SQL>
