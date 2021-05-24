@@ -6,10 +6,6 @@ public class HomePage {
 	public static void main(String args[]) {
 		JFrame home = new JFrame("InternHub - Home Page");
 		home.getContentPane().setBackground(new Color(125, 193, 232));
-		/*
-		 * 174, 230, 101 pista green
-		 * 125, 193, 232 blue
-		*/
 		
 		JLabel title = new JLabel("Welcome to InternHub!");
 		title.setBounds(150, 50, 350, 60);
