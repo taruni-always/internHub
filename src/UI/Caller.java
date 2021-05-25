@@ -6,8 +6,8 @@ public class Caller {
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
-		new NewStudent(frame);
-		//new HomePage(frame);
+		//new NewStudent(frame);
+		new HomePage(frame);
 		//new TypeOfUser(frame);
 	}
 
