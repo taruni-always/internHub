@@ -29,25 +29,25 @@ public class NewStudent {
 		userNameLabel.setBounds(50, 127, 114, 29);
 		frame.add(userNameLabel);
 		
-		firstNameLabel = new JLabel("First name *");
-		firstNameLabel.setFont(new Font("First name", Font.PLAIN, 20));
-		firstNameLabel.setBounds(50, 197, 114, 29);
-		frame.add(firstNameLabel);
-		
-		secondNameLabel = new JLabel("Second name ");
-		secondNameLabel.setFont(new Font("Second name", Font.PLAIN, 20));
-		secondNameLabel.setBounds(50, 268, 139, 29);
-		frame.add(secondNameLabel);
-		
 		userName = new JTextField();
 		userName.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		userName.setBounds(240, 127, 173, 28);
 		frame.add(userName);
 		
+		firstNameLabel = new JLabel("First name *");
+		firstNameLabel.setFont(new Font("First name", Font.PLAIN, 20));
+		firstNameLabel.setBounds(50, 197, 114, 29);
+		frame.add(firstNameLabel);
+
 		firstName = new JTextField("");
 		firstName.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		firstName.setBounds(240, 197, 173, 28);
 		frame.add(firstName);
+		
+		secondNameLabel = new JLabel("Second name ");
+		secondNameLabel.setFont(new Font("Second name", Font.PLAIN, 20));
+		secondNameLabel.setBounds(50, 268, 139, 29);
+		frame.add(secondNameLabel);
 		
 		secondName = new JTextField();
 		secondName.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -104,8 +104,8 @@ public class NewStudent {
 			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			//frame.getContentPane().removeAll();
-			//new newStudentProfile(frame);
+			frame.getContentPane().removeAll();
+			new NewStudentProfile(frame, userName.getText());
 		}
 	}
 }

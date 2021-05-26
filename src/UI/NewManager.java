@@ -104,8 +104,8 @@ public class NewManager {
 			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			//frame.getContentPane().removeAll();
-			//new newStudentProfile(frame);
+			frame.getContentPane().removeAll();
+			new NewManagerProfile(frame, userName.getText());
 		}
 	}
 }
