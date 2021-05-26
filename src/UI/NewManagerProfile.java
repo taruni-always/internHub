@@ -138,7 +138,7 @@ public class NewManagerProfile {
 		}
 		else {
 			frame.getContentPane().removeAll();
-			//new Manager(mid);
+			new Manager(frame, mid);
 		}
 	}
 }

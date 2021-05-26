@@ -7,13 +7,14 @@ public class Caller {
 		
 		JFrame frame = new JFrame();
 		//new NewStudent(frame);
-		//new HomePage(frame);
+		new HomePage(frame);
 		//new TypeOfUser(frame);
 		//new NewStudentProfile(frame, "abc");
 		//new HomePage(frame);
 		//new LoginWithUsername(frame);
-	//	new UserLogin(frame);
-		new Student(frame, "joe123");
+		//new UserLogin(frame);
+		//new Student(frame, "joe123");
+		//new Manager(frame, "da_vid");
 	}
 
 }

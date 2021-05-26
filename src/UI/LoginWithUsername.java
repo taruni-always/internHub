@@ -15,7 +15,7 @@ public class LoginWithUsername {
 		user = typeOfUser;
 		this.frame = frame;
 		frame.setTitle("Login as a " + user + "!");
-		frame.getContentPane().setBackground(new Color(174, 230, 101));
+		frame.getContentPane().setBackground(new Color(125, 193, 232));
 		
 		prompt = new JLabel("Enter your user name:");
 		prompt.setBounds(50, 56, 400, 40);
@@ -68,7 +68,7 @@ public class LoginWithUsername {
 		}
 		else {
 			frame.getContentPane().removeAll();
-			//new Manager(username);
+			new Manager(frame, username);
 		}
 	}
 }

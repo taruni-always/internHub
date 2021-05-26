@@ -6,15 +6,15 @@ import java.awt.event.*;
 
 public class Student {
 	public JFrame frame;
-	public String sid;
+	public String student_id;
 	public JMenuBar menuBar;
 	public JMenu profileMenu, internshipsApplied, internships;
-	public JMenuItem viewProfile, editProfile, viewInternshipsApplied, viewInternships, applyInternships;
+	public JMenuItem viewProfile, editProfile, viewInternshipsApplied, deleteInternshipsApplied, viewInternships, applyInternships;
 	public JLabel welcome;
 	public JButton back;
 	
 	public Student(JFrame frame, String username) {
-		this.sid = username;
+		this.student_id = username;
 		this.frame = frame;
 		frame.setTitle("Student: " + username);
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
@@ -43,7 +43,7 @@ public class Student {
 		internshipsApplied.add(viewInternshipsApplied);
 		
 		viewInternships = new JMenuItem("View available internships");
-		applyInternships = new JMenuItem("Apply for internships");
+		applyInternships = new JMenuItem("Apply for new internships");
 		internships.add(viewInternships);
 		internships.add(applyInternships);
 		
@@ -63,10 +63,10 @@ public class Student {
 		welcome = new JLabel("Welcome <name>!");
 		welcome.setBounds(60, 120, 400, 40);
 		Font promptFont = welcome.getFont();
-		int stringWidth = welcome.getFontMetrics(promptFont).stringWidth("Enter your user name");
+		int stringWidth = welcome.getFontMetrics(promptFont).stringWidth("Welcome <name>!");
 		double widthRatio = (double)400 / (double)stringWidth;
 		int newFontSize = (int)(promptFont.getSize() * widthRatio);
-		welcome.setFont(new Font("Enter your user name", Font.ITALIC, Math.min(newFontSize, 40)));
+		welcome.setFont(new Font("Welcome", Font.ITALIC, Math.min(newFontSize, 40)));
 		frame.add(welcome);
 		
 		frame.setJMenuBar(menuBar);

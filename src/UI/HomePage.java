@@ -35,7 +35,7 @@ public class HomePage {
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new UserLogin(frame);
+				new UserLoginSignup(frame, "login");
 			}
 		});
 		
@@ -48,7 +48,7 @@ public class HomePage {
 		signup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new UserSignup(frame);
+				new UserLoginSignup(frame, "signup");
 			}
 		});
 		

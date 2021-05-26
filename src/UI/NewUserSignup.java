@@ -4,16 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class NewStudent {
+public class NewUserSignup {
 	public JFrame frame;
 	public JLabel prompt, userNameLabel, firstNameLabel, secondNameLabel;
 	public JTextField userName, firstName, secondName;
 	public JButton back, submit;
+	public String userType;
 	
-	public NewStudent(JFrame frame) {
+	public NewUserSignup(JFrame frame, String userType) {
 		this.frame = frame;
-		frame.setTitle("New Student User");
-		frame.getContentPane().setBackground(new Color(174, 230, 101));
+		this.userType = userType;
+		if (userType.equals("student")) {
+			frame.setTitle("New Student User");
+		}
+		else {
+			frame.setTitle("New Project Manager User");
+		}
+		frame.getContentPane().setBackground(new Color(125, 193, 232));
 		
 		JLabel prompt = new JLabel("Please Enter Your Details");
 		prompt.setBounds(50, 56, 400, 40);
@@ -105,7 +112,12 @@ public class NewStudent {
 		}
 		else {
 			frame.getContentPane().removeAll();
-			new NewStudentProfile(frame, userName.getText());
+			if (userType.equals("student")){
+				new NewStudentProfile(frame, userName.getText());
+			}
+			else {
+				new NewManagerProfile(frame, userName.getText());
+			}
 		}
 	}
 }

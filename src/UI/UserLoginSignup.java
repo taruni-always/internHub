@@ -3,14 +3,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UserLogin {
+public class UserLoginSignup {
 	public JFrame frame;
 	public JLabel prompt;
 	public JButton student, manager, back;
 	
-	public UserLogin(JFrame frame) {
+	public UserLoginSignup(JFrame frame, String userType) {
 		this.frame = frame;
-		frame.setTitle("User Log-in");
+		if (userType.equals("login")) {
+			frame.setTitle("User Log-in");
+		}
+		else {
+			frame.setTitle("User Sign-up");
+		}
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
 		
 		prompt = new JLabel("Select the type of user:");
@@ -31,7 +36,13 @@ public class UserLogin {
 		student.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new LoginWithUsername(frame, "student");
+				if (userType.equals("login")) {
+					new LoginWithUsername(frame, "student");
+				}
+				else {
+					new NewUserSignup(frame, "student");
+				}
+				
 			}
 		});
 		
@@ -44,7 +55,12 @@ public class UserLogin {
 		manager.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new LoginWithUsername(frame, "manager");
+				if (userType.equals("login")) {
+					new LoginWithUsername(frame, "manager");
+				}
+				else {
+					new NewUserSignup(frame, "manager");
+				}
 			}
 		});
 		
