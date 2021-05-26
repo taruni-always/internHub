@@ -14,8 +14,8 @@ public class NewStudentProfile {
 
 	public NewStudentProfile(JFrame frame, String sid) {
 		this.frame = frame;
-		this.sid = sid;
 		frame.setTitle("New Student Profile");
+		this.sid = sid;
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
 
 		dobLabel = new JLabel("Date of Birth (Ex:05-dec-2001)*");

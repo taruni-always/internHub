@@ -4,11 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class HomePage {
-	//public JFrame home;
-	public JLabel title, prompt;
+	public JFrame frame;
+	public JLabel title, prompt, marketting;
 	public JButton login, signup;
 	
 	public HomePage(JFrame frame) {
+		this.frame = frame;
 		frame.setTitle("InternHub - Home Page");
 		frame.getContentPane().setBackground(new Color(125, 193, 232));
 		
@@ -31,6 +32,12 @@ public class HomePage {
 		login.setBackground(Color.white);
 		login.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		frame.add(login);
+		login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				new UserLogin(frame);
+			}
+		});
 		
 		signup = new JButton("Sign-up");
 		signup.setBounds(320,200,150, 40);
@@ -41,10 +48,13 @@ public class HomePage {
 		signup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new TypeOfUser(frame);
+				new UserSignup(frame);
 			}
 		});
 		
+		marketting = new JLabel( "<html><span bgcolor=\"yellow\">Looking for an internship? We got you! Providing internship opportunities for students across the globe!</span></html>" );
+		marketting.setBounds(18, 380, 600, 20);
+		frame.add(marketting);
 		
 		frame.setSize(650, 450);
 		frame.setLayout(null);

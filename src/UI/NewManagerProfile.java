@@ -13,8 +13,9 @@ public class NewManagerProfile {
 
 	public NewManagerProfile(JFrame frame, String mid) {
 		this.frame = frame;
-		this.mid = mid;
 		frame.setTitle("New Project Manager Profile");
+		this.mid = mid;
+		
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
 
 		companyLabel = new JLabel("Company Name *");

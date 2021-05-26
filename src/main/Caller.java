@@ -1,8 +1,8 @@
-package UI;
+package main;
 import javax.swing.*;
+import UI.*;
 
 public class Caller {
-
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
@@ -10,7 +10,10 @@ public class Caller {
 		//new HomePage(frame);
 		//new TypeOfUser(frame);
 		//new NewStudentProfile(frame, "abc");
-		new NewManagerProfile(frame, "abc");
+		//new HomePage(frame);
+		//new LoginWithUsername(frame);
+	//	new UserLogin(frame);
+		new Student(frame, "joe123");
 	}
 
 }
