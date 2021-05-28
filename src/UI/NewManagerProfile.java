@@ -3,6 +3,8 @@ package UI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Statement;
+import java.sql.*;
 
 public class NewManagerProfile {
 	public JFrame frame;
@@ -10,7 +12,7 @@ public class NewManagerProfile {
 	public JLabel companyLabel, designationLabel, phoneLabel, prompt;
 	public JTextField company, designation, phone;
 	public String mid;
-
+	
 	public NewManagerProfile(JFrame frame, String mid) {
 		this.frame = frame;
 		frame.setTitle("New Project Manager Profile");

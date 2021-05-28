@@ -1,8 +1,10 @@
 package UI;
-import javax.swing.*;
 
+import javax.swing.*;
+import main.ConnectionManager;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 
 public class Student {
 	public JFrame frame;
@@ -14,9 +16,28 @@ public class Student {
 	public JButton back;
 	
 	public Student(JFrame frame, String username) {
+		
 		this.student_id = username;
 		this.frame = frame;
-		frame.setTitle("Student: " + username);
+		
+		String name = " name";
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select firstname from students where student_id = '" + username + "'");
+			rs.next();
+			name = rs.getString(1);
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		frame.setTitle("Student: " + name);
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
 		
 		menuBar = new JMenuBar();
@@ -60,10 +81,10 @@ public class Student {
 			}
 		});
 		
-		welcome = new JLabel("Welcome <name>!");
+		welcome = new JLabel("Welcome " + name + "!");
 		welcome.setBounds(60, 120, 400, 40);
 		Font promptFont = welcome.getFont();
-		int stringWidth = welcome.getFontMetrics(promptFont).stringWidth("Welcome <name>!");
+		int stringWidth = welcome.getFontMetrics(promptFont).stringWidth("Welcome namelong!");
 		double widthRatio = (double)400 / (double)stringWidth;
 		int newFontSize = (int)(promptFont.getSize() * widthRatio);
 		welcome.setFont(new Font("Welcome", Font.ITALIC, Math.min(newFontSize, 40)));

@@ -3,6 +3,8 @@ package UI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Statement;
+import java.sql.*;
 
 public class NewStudentProfile {
 	public JFrame frame;

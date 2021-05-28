@@ -1,7 +1,9 @@
 package UI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 
 public class HomePage {
 	public JFrame frame;
@@ -48,7 +50,7 @@ public class HomePage {
 		signup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
-				new UserLoginSignup(frame, "signup");
+				new UserLoginSignup(frame, "signup" );
 			}
 		});
 		

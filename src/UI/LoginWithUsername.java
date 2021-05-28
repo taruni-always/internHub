@@ -1,20 +1,22 @@
 package UI;
-import javax.swing.*;
 
+import javax.swing.*;
+import main.ConnectionManager;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.*;
 
 public class LoginWithUsername {
 	public JFrame frame;
-	public String user;
+	public String typeOfUser;
 	public JLabel prompt;
 	public JButton submit, back;
 	public JTextField username;
 	
 	public LoginWithUsername(JFrame frame, String typeOfUser ) {
-		user = typeOfUser;
+		this.typeOfUser = typeOfUser;
 		this.frame = frame;
-		frame.setTitle("Login as a " + user + "!");
+		frame.setTitle("Login as a " + typeOfUser + "!");
 		frame.getContentPane().setBackground(new Color(125, 193, 232));
 		
 		prompt = new JLabel("Enter your user name:");
@@ -51,7 +53,6 @@ public class LoginWithUsername {
 			}
 		});
 		
-		
 		username = new JTextField();
 		username.setBounds(130, 150, 200, 30);
 		frame.add(username);
@@ -62,13 +63,51 @@ public class LoginWithUsername {
 	}
 	
 	public void validate(String username) {
-		if (user.equals("student")) {
-			frame.getContentPane().removeAll();
-			new Student(frame, username);
-		}
-		else {
-			frame.getContentPane().removeAll();
-			new Manager(frame, username);
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			boolean flag = false;
+			if (typeOfUser.equals("student")) {
+				rs = s.executeQuery("select student_id from students");
+				while(rs.next()) {
+					String user = rs.getString(1);
+					if (user.equals(username)) {
+						flag = true;
+						break;
+					}
+				}
+				if (flag) {
+					frame.getContentPane().removeAll();
+					new Student(frame, username);
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), "Username doesnot exist! Please enter a valid username!", "error", JOptionPane.ERROR_MESSAGE);
+				}				
+			}
+			else {
+				rs = s.executeQuery("select manager_id from projectmanagers");
+				while(rs.next()) {
+					if (rs.getString(1).equals(username)) {
+						flag = true;
+						break;
+					}
+				}
+				if (flag) {
+					frame.getContentPane().removeAll();
+						new Manager(frame, username);
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), "Username doesnot exist! Please enter a valid username!", "error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
 		}
 	}
 }
