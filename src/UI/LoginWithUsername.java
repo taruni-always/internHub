@@ -55,6 +55,15 @@ public class LoginWithUsername {
 		
 		username = new JTextField();
 		username.setBounds(130, 150, 200, 30);
+		username.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          submit.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
 		frame.add(username);
 		
 		frame.setSize(500, 440);	
@@ -110,4 +119,5 @@ public class LoginWithUsername {
 			e1.printStackTrace();
 		}
 	}
+	
 }

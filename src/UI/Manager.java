@@ -82,6 +82,7 @@ public class Manager {
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
+				frame.setJMenuBar(null);
 				new HomePage(frame);
 			}
 		});

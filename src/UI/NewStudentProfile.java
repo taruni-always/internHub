@@ -85,10 +85,9 @@ public class NewStudentProfile {
 		}
 		
 		JLabel prompt = new JLabel("Welcome " + name + ", Please Enter Your Profile Details");
-		prompt.setBounds(50, 50, 400, 30);
+		prompt.setBounds(50, 50, 400, 35);
 		Font promptFont = prompt.getFont();
-		int stringWidth = prompt.getFontMetrics(promptFont)
-				.stringWidth("Welcome ____ Please Enter Your Profile Details");
+		int stringWidth = prompt.getFontMetrics(promptFont).stringWidth("Welcome ____ Please Enter Your Profile Details");
 		double widthRatio = (double) 400 / (double) stringWidth;
 		int newFontSize = (int) (promptFont.getSize() * widthRatio);
 		prompt.setFont(new Font("Please Enter Your Profile Details", Font.ITALIC, Math.min(newFontSize, 30)));
@@ -139,7 +138,7 @@ public class NewStudentProfile {
 		}
 		else {
 			try {
-				int num = Integer.parseInt(phone);
+				Integer.parseInt(phone);
 				if (phone.length() != 10) {
 					message += "Phone number must have exactly 10 digits!\n";
 				}
@@ -187,6 +186,19 @@ public class NewStudentProfile {
 			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
+			Connection con;
+			Statement s;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				s.executeQuery("insert into studentprofile values('" + sid + "', '" + dob + "', '" + college + "', '" + skills + "', " + phone + ", " + gpa + ")");
+				s.executeQuery("commit");
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			frame.getContentPane().removeAll();
 			new Student(frame, sid);
 		}

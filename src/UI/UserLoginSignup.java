@@ -2,7 +2,6 @@ package UI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.*;
 
 public class UserLoginSignup {
 	public JFrame frame;
@@ -65,7 +64,7 @@ public class UserLoginSignup {
 			}
 		});
 		
-		back = new JButton("<- Go back to Home Page");
+		back = new JButton("Go back to Home Page");
 		back.setBounds(50, 320, 160, 30);
 		back.setFont(new Font("Go back to Home Page",Font.ITALIC, 12));
 		back.setBackground(Color.white);
