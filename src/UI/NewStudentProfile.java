@@ -1,9 +1,11 @@
 package UI;
 
 import javax.swing.*;
+
+import main.ConnectionManager;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Statement;
 import java.sql.*;
 
 public class NewStudentProfile {
@@ -64,8 +66,25 @@ public class NewStudentProfile {
 		skills.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		skills.setBounds(250, 287, 150, 80);
 		frame.add(skills);
-
-		JLabel prompt = new JLabel("Welcome ___ Please Enter Your Profile Details");
+		
+		String name = " name";
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select firstname from students where student_id = '" + sid + "'");
+			rs.next();
+			name = rs.getString(1);
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		JLabel prompt = new JLabel("Welcome " + name + ", Please Enter Your Profile Details");
 		prompt.setBounds(50, 50, 400, 30);
 		Font promptFont = prompt.getFont();
 		int stringWidth = prompt.getFontMetrics(promptFont)
@@ -169,7 +188,7 @@ public class NewStudentProfile {
 		}
 		else {
 			frame.getContentPane().removeAll();
-			//new Student(sid);
+			new Student(frame, sid);
 		}
 	}
 }

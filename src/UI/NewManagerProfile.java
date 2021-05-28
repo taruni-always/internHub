@@ -1,9 +1,11 @@
 package UI;
 
 import javax.swing.*;
+
+import main.ConnectionManager;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Statement;
 import java.sql.*;
 
 public class NewManagerProfile {
@@ -49,8 +51,25 @@ public class NewManagerProfile {
 		designation.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		designation.setBounds(250, 207, 150, 28);
 		frame.add(designation);
-
-		JLabel prompt = new JLabel("Welcome ___ Please Enter Your Profile Details");
+		
+		String name = " name";
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select firstname from projectmanagers where manager_id = '" + mid + "'");
+			rs.next();
+			name = rs.getString(1);
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		JLabel prompt = new JLabel("Welcome " +  name + ", Please Enter Your Profile Details");
 		prompt.setBounds(50, 50, 400, 30);
 		Font promptFont = prompt.getFont();
 		int stringWidth = prompt.getFontMetrics(promptFont)

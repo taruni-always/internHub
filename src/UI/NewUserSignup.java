@@ -3,8 +3,8 @@ package UI;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Statement;
 import java.sql.*;
+import main.*;
 
 public class NewUserSignup {
 	public JFrame frame;
@@ -98,6 +98,34 @@ public class NewUserSignup {
 		if (uname.length() == 0) {
 			message = "Username cannot be empty!\n";
 		}
+		else {
+			Connection con;
+			Statement s;
+			ResultSet rs;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				if (userType.equals("student")) {
+					rs = s.executeQuery("select student_id from students");
+				}
+				else {
+					rs = s.executeQuery("select manager_id from projectmanagers");
+				}
+				while (rs.next()) {
+					if (rs.getString(1).equals(uname)) {
+						message += "The username already exists. Please choose a different username!\n";
+						break;
+					}
+				}
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+		}
+		
 		if (fname.length() == 0) {
 			message = message + "First name cannot be empty!\n";
 		}
@@ -113,13 +141,28 @@ public class NewUserSignup {
 			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			frame.getContentPane().removeAll();
-			if (userType.equals("student")){
-				new NewStudentProfile(frame, userName.getText());
+			Connection con;
+			Statement s;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				frame.getContentPane().removeAll();
+				if (userType.equals("student")){
+					s.executeQuery("Insert into students values('" + uname + "', '" + fname + "', '" +lname + "')" );
+					new NewStudentProfile(frame, userName.getText());
+				}
+				else {
+					s.executeQuery("Insert into projectmanagers values('" + uname + "', '" + fname + "', '" +lname + "')" );
+					new NewManagerProfile(frame, userName.getText());
+				}
+				s.executeQuery("commit");
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
 			}
-			else {
-				new NewManagerProfile(frame, userName.getText());
-			}
+			
 		}
 	}
 }
