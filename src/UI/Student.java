@@ -18,7 +18,6 @@ public class Student {
 	public Student(JFrame frame, String username) {
 		
 		this.student_id = username;
-		this.frame = frame;
 		
 		String name = " name";
 		Connection con;
@@ -82,6 +81,7 @@ public class Student {
 		viewProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				welcome.setText("");
+				profileView(frame);
 			}
 		});
 		
@@ -99,8 +99,52 @@ public class Student {
 		
 		frame.setJMenuBar(menuBar);
 		frame.setSize(500, 440);	
+		//frame.setLayout(new BorderLayout());
 		frame.setLayout(null);
-		frame.setVisible(true);		
+		frame.setVisible(true);	
+		this.frame = frame;
+	}
+	
+	public void profileView(JFrame frame) {
+		String fname = "", lname = "", dob = "", college = "", skills = "", phone = "", gpa = "";
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select * from students where student_id = '" + student_id + "'");
+			rs.next();
+			fname = rs.getString(2);
+			lname = rs.getString(3);
+			rs = s.executeQuery("select * from studentprofile where student_id = '" + student_id + "'");
+			rs.next();
+			dob = rs.getString(2);
+			college = rs.getString(3);
+			skills = rs.getString(4);
+			phone = rs.getString(5);
+			gpa = rs.getString(6);
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		String data[][] = {{"Username:", student_id}, 
+				{"First name:", fname}, 
+				{"Last name:", lname}, 
+				{"Date of Birth:", dob.substring(0, 11)}, 
+				{"Phone number:", phone}, 
+				{"College name:", college}, 
+				{"CGPA:", gpa}, {"Skills:", skills}};
+		String col[] = {"FIELD", "VALUE"};
+		JTable details = new JTable(data, col);
+		details.setBounds(100, 70, 200, 100);
+		details.setFont(new Font("", Font.PLAIN, 15));
+		JScrollPane scroll = new JScrollPane(details);
+		scroll.setBounds(90, 70, 300, 150);
+		frame.add(scroll);
+		
 	}
 	
 }

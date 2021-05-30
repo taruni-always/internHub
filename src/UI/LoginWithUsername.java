@@ -28,19 +28,6 @@ public class LoginWithUsername {
 		prompt.setFont(new Font("Enter your user name", Font.ITALIC, Math.min(newFontSize, 40)));
 		frame.add(prompt);
 		
-		back = new JButton("Go back to Home Page");
-		back.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		back.setBackground(Color.WHITE);
-		back.setFont(new Font("Go back to Home Page", Font.ITALIC, 11));
-		back.setBounds(10, 350, 154, 23);
-		frame.add(back);
-		back.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frame.getContentPane().removeAll();
-				new HomePage(frame);
-			}
-		});
-		
 		submit = new JButton("Submit");
 		submit.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		submit.setBackground(Color.WHITE);
@@ -65,6 +52,20 @@ public class LoginWithUsername {
 			    public void keyTyped(KeyEvent e) {}
 		});
 		frame.add(username);
+		
+		back = new JButton("Go back to Home Page");
+		back.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		back.setBackground(Color.WHITE);
+		back.setFont(new Font("Go back to Home Page", Font.ITALIC, 11));
+		back.setBounds(10, 350, 154, 23);
+		frame.add(back);
+		back.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				new HomePage(frame);
+			}
+		});
 		
 		frame.setSize(500, 440);	
 		frame.setLayout(null);

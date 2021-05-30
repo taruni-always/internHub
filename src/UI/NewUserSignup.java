@@ -84,6 +84,7 @@ public class NewUserSignup {
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
+				frame.repaint();
 				new HomePage(frame);
 			}
 		});

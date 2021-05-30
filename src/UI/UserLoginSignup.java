@@ -19,7 +19,7 @@ public class UserLoginSignup {
 		frame.getContentPane().setBackground(new Color(174, 230, 101));
 		
 		prompt = new JLabel("Select the type of user:");
-		prompt.setBounds(150, 50, 350, 60);
+		prompt.setBounds(80, 50, 350, 60);
 		Font promptFont = prompt.getFont();
 		int stringWidth = prompt.getFontMetrics(promptFont).stringWidth("Select the type of user:");
 		double widthRatio = (double)350 / (double)stringWidth;
@@ -28,7 +28,7 @@ public class UserLoginSignup {
 		frame.add(prompt);
 		
 		student = new JButton("Student");
-		student.setBounds(100,150,150, 40);
+		student.setBounds(70,150,150, 40);
 		student.setFont(new Font("Student", Font.PLAIN, 20));
 		student.setBackground(Color.white);
 		student.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -47,7 +47,7 @@ public class UserLoginSignup {
 		});
 		
 		manager = new JButton("Project Manager");
-		manager.setBounds(370,150,160, 40);
+		manager.setBounds(270,150,160, 40);
 		manager.setFont(new Font("Project Manager", Font.PLAIN, 18));
 		manager.setBackground(Color.white);
 		manager.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -77,7 +77,7 @@ public class UserLoginSignup {
 			}
 		});
 		
-		frame.setSize(650, 450);
+		frame.setSize(500, 440);
 		frame.setLayout(null);
 		frame.setVisible(true);
 	}
