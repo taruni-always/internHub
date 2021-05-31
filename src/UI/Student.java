@@ -1,6 +1,8 @@
 package UI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 import main.ConnectionManager;
 import java.awt.*;
 import java.awt.event.*;
@@ -81,15 +83,28 @@ public class Student {
 		viewProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
 				profileView(frame);
 			}
 		});
 		
-		editProfile = new JMenuItem("Edit profile");
+		editProfile = new JMenuItem("Edit profile");		
 		profileMenu.add(viewProfile);
 		profileMenu.add(editProfile);
 		
 		viewInternshipsApplied = new JMenuItem("View internships applied");
+		viewInternshipsApplied.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsAppliedView(frame);
+			}
+		});
+		
 		internshipsApplied.add(viewInternshipsApplied);
 		
 		viewInternships = new JMenuItem("View available internships");
@@ -99,7 +114,6 @@ public class Student {
 		
 		frame.setJMenuBar(menuBar);
 		frame.setSize(500, 440);	
-		//frame.setLayout(new BorderLayout());
 		frame.setLayout(null);
 		frame.setVisible(true);	
 		this.frame = frame;
@@ -145,6 +159,52 @@ public class Student {
 		scroll.setBounds(90, 70, 300, 150);
 		frame.add(scroll);
 		
+	}
+	
+	public void internshipsAppliedView(JFrame frame) {
+		String iid, position, salary, status, location;		
+		String header[] = new String[] { "ID", "Role", "Salary", "Location", "Selected (yes/no)"};
+		
+		JTable table = new JTable();
+		DefaultTableModel dtm = new DefaultTableModel(0, 0);
+		dtm.setColumnIdentifiers(header);
+		table.setModel(dtm);
+		
+		Connection con;
+		Statement s1, s2;
+		ResultSet r1, r2;
+		try {
+			con = ConnectionManager.getConnection();
+			s1 = con.createStatement();
+			s2 = con.createStatement();
+			r1 = s1.executeQuery("select * from internshipsapplied where student_id = '" + student_id + "'");
+			while (r1.next()) {
+				iid = r1.getString(2);
+				status = r1.getString(3);
+				r2 = s2.executeQuery("select salary, location, position from internships where internship_id = " + iid + "" );
+				r2.next();
+				salary = r2.getString(1);
+				location = r2.getString(2);
+				position = r2.getString(3);
+				dtm.addRow(new Object[] {iid, position, salary, location, status});
+			}
+			s1.close();
+			s2.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		table.setBounds(100, 70, 250, 100);
+		table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		table.getColumnModel().getColumn(1).setPreferredWidth(180);
+		table.getColumnModel().getColumn(2).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setPreferredWidth(160);
+		table.getColumnModel().getColumn(4).setPreferredWidth(160);
+		table.setFont(new Font("", Font.PLAIN, 15));
+		JScrollPane scroll = new JScrollPane(table);
+		scroll.setBounds(15, 70, 450, 150);
+		frame.add(scroll);
 	}
 	
 }

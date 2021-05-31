@@ -16,7 +16,7 @@ public class Caller {
 		//new HomePage(frame);
 		//new LoginWithUsername(frame);
 		//new UserLogin(frame);
-		new Student(frame, "shru15");
+		new Student(frame, "emmaw");
 		//		details.setFont(new Font("", Font.PLAIN, 11));
 
 		//new Manager(frame, "da_vid");
