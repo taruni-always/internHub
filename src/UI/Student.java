@@ -108,6 +108,15 @@ public class Student {
 		internshipsApplied.add(viewInternshipsApplied);
 		
 		viewInternships = new JMenuItem("View available internships");
+		viewInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsView(frame);
+			}
+		});
 		applyInternships = new JMenuItem("Apply for new internships");
 		internships.add(viewInternships);
 		internships.add(applyInternships);
@@ -205,6 +214,54 @@ public class Student {
 		JScrollPane scroll = new JScrollPane(table);
 		scroll.setBounds(15, 70, 450, 150);
 		frame.add(scroll);
+	}
+	
+	public void internshipsView(JFrame frame) {
+		String iid, position, salary, location, company, mid;
+		String header[] = new String[] { "ID", "Role", "Salary", "Company", "Location"};
+		
+		JTable table = new JTable();
+		DefaultTableModel dtm = new DefaultTableModel(0, 0);
+		dtm.setColumnIdentifiers(header);
+		table.setModel(dtm);
+		Connection con;
+		Statement s1, s2;
+		ResultSet r1, r2;
+		try {
+			con = ConnectionManager.getConnection();
+			s1 = con.createStatement();
+			s2 = con.createStatement();
+			r1 = s1.executeQuery("select manager_id, internship_id, position, salary, location from internships where internship_id not in (select internship_id from internshipsapplied where student_id = '" + student_id + "')");
+			while (r1.next()) {
+				mid = r1.getString(1);
+				iid = r1.getString(2);
+				position = r1.getString(3);
+				salary = r1.getString(4);
+				location = r1.getString(5);
+				r2 = s2.executeQuery("select companyname from managerprofile where manager_id = '" + mid + "'");
+				r2.next();
+				company = r2.getString(1);
+				dtm.addRow(new Object[] {iid, position, salary, company, location});
+			}
+			s1.close();
+			s2.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		table.setBounds(100, 70, 250, 100);
+		table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		table.getColumnModel().getColumn(1).setPreferredWidth(180);
+		table.getColumnModel().getColumn(2).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setPreferredWidth(170);
+		table.getColumnModel().getColumn(4).setPreferredWidth(160);
+		table.setFont(new Font("", Font.PLAIN, 15));
+		JScrollPane scroll = new JScrollPane(table);
+		scroll.setBounds(15, 70, 450, 150);
+		frame.add(scroll);
+		
 	}
 	
 }
