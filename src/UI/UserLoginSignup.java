@@ -47,7 +47,7 @@ public class UserLoginSignup {
 		});
 		
 		manager = new JButton("Project Manager");
-		manager.setBounds(270,150,160, 40);
+		manager.setBounds(250,150,160, 40);
 		manager.setFont(new Font("Project Manager", Font.PLAIN, 18));
 		manager.setBackground(Color.white);
 		manager.setBorder(BorderFactory.createLineBorder(Color.BLACK));

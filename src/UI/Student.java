@@ -162,10 +162,11 @@ public class Student {
 				{"CGPA:", gpa}, {"Skills:", skills}};
 		String col[] = {"FIELD", "VALUE"};
 		JTable details = new JTable(data, col);
-		details.setBounds(100, 70, 200, 100);
+		details.setBounds(100, 70, 150, 100);
 		details.setFont(new Font("", Font.PLAIN, 15));
+		details.getColumnModel().getColumn(0).setPreferredWidth(100);		
 		JScrollPane scroll = new JScrollPane(details);
-		scroll.setBounds(90, 70, 300, 150);
+		scroll.setBounds(90, 70, 300, 152);
 		frame.add(scroll);
 		
 	}
@@ -211,6 +212,7 @@ public class Student {
 		table.getColumnModel().getColumn(3).setPreferredWidth(160);
 		table.getColumnModel().getColumn(4).setPreferredWidth(160);
 		table.setFont(new Font("", Font.PLAIN, 15));
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JScrollPane scroll = new JScrollPane(table);
 		scroll.setBounds(15, 70, 450, 150);
 		frame.add(scroll);
@@ -257,6 +259,7 @@ public class Student {
 		table.getColumnModel().getColumn(2).setPreferredWidth(70);
 		table.getColumnModel().getColumn(3).setPreferredWidth(170);
 		table.getColumnModel().getColumn(4).setPreferredWidth(160);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFont(new Font("", Font.PLAIN, 15));
 		JScrollPane scroll = new JScrollPane(table);
 		scroll.setBounds(15, 70, 450, 150);

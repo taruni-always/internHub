@@ -1,6 +1,7 @@
 package UI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import main.ConnectionManager;
 
@@ -57,11 +58,30 @@ public class Manager {
 		menuBar.add(internshipRequestsMenu);
 		
 		viewProfile = new JMenuItem("View profile");
+		viewProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				profileView(frame);
+			}
+		});
+		
 		editProfile = new JMenuItem("Edit profile");
 		profileMenu.add(viewProfile);
 		profileMenu.add(editProfile);
 		
 		viewInternships = new JMenuItem("View internships posted");
+		viewInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsPostedView(frame);
+			}
+		});
 		postInternships = new JMenuItem("Post new internships");
 		editInternships = new JMenuItem("Edit internships posted");
 		internshipsMenu.add(viewInternships);
@@ -69,6 +89,15 @@ public class Manager {
 		internshipsMenu.add(postInternships);
 		
 		viewInternshipRequests = new JMenuItem("View internships requests");
+		viewInternshipRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipRequestsView(frame);
+			}
+		});
 		approveInternshipRequests = new JMenuItem("Approve internship requests");
 		internshipRequestsMenu.add(viewInternshipRequests);
 		internshipRequestsMenu.add(approveInternshipRequests);
@@ -100,5 +129,141 @@ public class Manager {
 		frame.setSize(500, 440);	
 		frame.setLayout(null);
 		frame.setVisible(true);	
+	}
+	
+	public void profileView(JFrame frame) {
+		String fname = "", lname = "", company = "", designation = "", phone = "";
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select * from projectmanagers where manager_id = '" + manager_id + "'");
+			rs.next();
+			fname = rs.getString(2);
+			lname = rs.getString(3);
+			rs = s.executeQuery("select * from managerprofile where manager_id = '" + manager_id + "'");
+			rs.next();
+			company = rs.getString(2);
+			designation = rs.getString(3);
+			phone = rs.getString(4);
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		String data[][] = {{"Username:", manager_id}, 
+				{"First name:", fname}, 
+				{"Last name:", lname}, 
+				{"Company name", company}, 
+				{"Designation:", designation},
+				{"Phone number:", phone}};
+		String col[] = {"FIELD", "VALUE"};
+		JTable details = new JTable(data, col);
+		details.setBounds(100, 70, 200, 140);
+		details.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		details.setFont(new Font("", Font.PLAIN, 15));
+		details.getColumnModel().getColumn(0).setPreferredWidth(150);
+		details.getColumnModel().getColumn(1).setPreferredWidth(150);
+		JScrollPane scroll = new JScrollPane(details);
+		scroll.setBounds(90, 70, 280, 134);
+		frame.add(scroll);
+		
+	}
+	
+	public void internshipsPostedView(JFrame frame) {
+		String iid, position, salary, location, skills;		
+		String header[] = new String[] { "ID", "Role", "Salary", "Location", "Skills Required"};
+		
+		JTable table = new JTable();
+		DefaultTableModel dtm = new DefaultTableModel(0, 0);
+		dtm.setColumnIdentifiers(header);
+		table.setModel(dtm);
+		
+		Connection con;
+		Statement s;
+		ResultSet r;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			r = s.executeQuery("select * from internships where manager_id = '" + manager_id + "'");
+			while (r.next()) {
+				iid = r.getString(2);
+				position = r.getString(3);
+				salary = r.getString(4);
+				location = r.getString(5);
+				skills = r.getString(6);
+				dtm.addRow(new Object[] {iid, position, salary, location, skills});
+			}
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		table.setBounds(100, 70, 250, 100);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(180);
+		table.getColumnModel().getColumn(2).setPreferredWidth(60);
+		table.getColumnModel().getColumn(3).setPreferredWidth(90);
+		table.getColumnModel().getColumn(4).setPreferredWidth(250);
+		table.setFont(new Font("", Font.PLAIN, 15));
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		JScrollPane scroll = new JScrollPane(table);
+		scroll.setBounds(15, 70, 450, 150);
+		frame.add(scroll);
+	}
+	
+	public void internshipRequestsView(JFrame frame) {
+		String iid, position, student_id, skills, status;		
+		String header[] = new String[] { "ID", "Role", "studentid", "Skills Required", "Selected(yes/no)"};
+		
+		JTable table = new JTable();
+		DefaultTableModel dtm = new DefaultTableModel(0, 0);
+		dtm.setColumnIdentifiers(header);
+		table.setModel(dtm);
+		
+		Connection con;
+		Statement s1, s2, s3;
+		ResultSet r1, r2, r3;
+		try {
+			con = ConnectionManager.getConnection();
+			s1 = con.createStatement();
+			s2 = con.createStatement();
+			s3 = con.createStatement();
+			r1 = s1.executeQuery("select * from internshipsapplied where internship_id in (select internship_id from internships where manager_id = '" + manager_id + "')");
+			while (r1.next()) {
+				student_id = r1.getString(1);
+				iid = r1.getString(2);
+				status = r1.getString(3);
+				r2 = s2.executeQuery("select position from internships where internship_id = " + iid);
+				r2.next();
+				position = r2.getString(1);
+				r3 = s3.executeQuery("select skills from studentprofile where student_id = '" + student_id + "'");
+				r3.next();
+				skills = r3.getString(1);
+				dtm.addRow(new Object[] {iid, position, student_id, skills, status});
+			}
+			s1.close();
+			s2.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		table.setBounds(100, 70, 250, 100);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(180);
+		table.getColumnModel().getColumn(2).setPreferredWidth(60);
+		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table.getColumnModel().getColumn(3).setPreferredWidth(250);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setFont(new Font("", Font.PLAIN, 15));
+		JScrollPane scroll = new JScrollPane(table);
+		scroll.setBounds(15, 70, 450, 150);
+		frame.add(scroll);
+		
 	}
 }
