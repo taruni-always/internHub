@@ -106,12 +106,14 @@ public class NewUserSignup {
 			try {
 				con = ConnectionManager.getConnection();
 				s = con.createStatement();
-				if (userType.equals("student")) {
-					rs = s.executeQuery("select student_id from students");
+				rs = s.executeQuery("select student_id from students");
+				while (rs.next()) {
+					if (rs.getString(1).equals(uname)) {
+						message += "The username already exists. Please choose a different username!\n";
+						break;
+					}
 				}
-				else {
-					rs = s.executeQuery("select manager_id from projectmanagers");
-				}
+				rs = s.executeQuery("select manager_id from projectmanagers");
 				while (rs.next()) {
 					if (rs.getString(1).equals(uname)) {
 						message += "The username already exists. Please choose a different username!\n";

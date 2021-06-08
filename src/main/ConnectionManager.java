@@ -13,6 +13,5 @@ public class ConnectionManager {
       con = DriverManager.getConnection(url, username, password);
         return con;
     }
-
-
+    
 }
