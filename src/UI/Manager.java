@@ -218,7 +218,7 @@ public class Manager {
 	
 	public void internshipRequestsView(JFrame frame) {
 		String iid, position, student_id, skills, status;		
-		String header[] = new String[] { "ID", "Role", "studentid", "Skills Required", "Selected(yes/no)"};
+		String header[] = new String[] { "ID", "Role", "studentid", "Skills", "Selected(yes/no)"};
 		
 		JTable table = new JTable();
 		DefaultTableModel dtm = new DefaultTableModel(0, 0);
@@ -233,7 +233,7 @@ public class Manager {
 			s1 = con.createStatement();
 			s2 = con.createStatement();
 			s3 = con.createStatement();
-			r1 = s1.executeQuery("select * from internshipsapplied where internship_id in (select internship_id from internships where manager_id = '" + manager_id + "')");
+			r1 = s1.executeQuery("select * from internshipsapplied where internship_id in (select internship_id from internships where manager_id = '" + manager_id + "') and selectedyesno = 'no'");
 			while (r1.next()) {
 				student_id = r1.getString(1);
 				iid = r1.getString(2);
