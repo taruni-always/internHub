@@ -7,6 +7,7 @@ import main.ConnectionManager;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 public class Student {
 	public JFrame frame;
@@ -90,7 +91,16 @@ public class Student {
 			}
 		});
 		
-		editProfile = new JMenuItem("Edit profile");		
+		editProfile = new JMenuItem("Edit profile");
+		editProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				profileEdit(frame);
+			}
+		});
 		profileMenu.add(viewProfile);
 		profileMenu.add(editProfile);
 		
@@ -129,7 +139,17 @@ public class Student {
 	}
 	
 	public void profileView(JFrame frame) {
-		String fname = "", lname = "", dob = "", college = "", skills = "", phone = "", gpa = "";
+		JLabel unameF, unameV, fnameF, fnameV = null, lnameF, lnameV = null, dobF, dobV = null, collegeF, collegeV = null, skillsF, skillsV = null, phoneF, phoneV = null, gpaF, gpaV = null;
+		unameF = new JLabel("Username:");
+		unameV = new JLabel(student_id);
+		fnameF = new JLabel("First name:");
+		lnameF = new JLabel("Last name:");
+		dobF = new JLabel("Date of Birth:");
+		phoneF = new JLabel("Phone number:");
+		collegeF = new JLabel("College name:");
+		gpaF = new JLabel("CGPA:");
+		skillsF = new JLabel("Skills:");
+		
 		Connection con;
 		Statement s;
 		ResultSet rs;
@@ -138,36 +158,201 @@ public class Student {
 			s = con.createStatement();
 			rs = s.executeQuery("select * from students where student_id = '" + student_id + "'");
 			rs.next();
-			fname = rs.getString(2);
-			lname = rs.getString(3);
+			fnameV = new JLabel(rs.getString(2));
+			lnameV = new JLabel(rs.getString(3));
 			rs = s.executeQuery("select * from studentprofile where student_id = '" + student_id + "'");
 			rs.next();
-			dob = rs.getString(2);
-			college = rs.getString(3);
-			skills = rs.getString(4);
-			phone = rs.getString(5);
-			gpa = rs.getString(6);
+			dobV = new JLabel((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
+			collegeV = new JLabel (rs.getString(3));
+			skillsV = new JLabel(rs.getString(4));
+			phoneV = new JLabel(rs.getString(5));
+			gpaV = new JLabel(rs.getString(6));
 			s.close();
 			con.close();
 		} 
 		catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		String data[][] = {{"Username:", student_id}, 
-				{"First name:", fname}, 
-				{"Last name:", lname}, 
-				{"Date of Birth:", dob.substring(0, 11)}, 
-				{"Phone number:", phone}, 
-				{"College name:", college}, 
-				{"CGPA:", gpa}, {"Skills:", skills}};
-		String col[] = {"FIELD", "VALUE"};
-		JTable details = new JTable(data, col);
-		details.setBounds(100, 70, 150, 100);
-		details.setFont(new Font("", Font.PLAIN, 15));
-		details.getColumnModel().getColumn(0).setPreferredWidth(100);		
-		JScrollPane scroll = new JScrollPane(details);
-		scroll.setBounds(90, 70, 300, 152);
-		frame.add(scroll);
+		
+		unameF.setBounds(50, 30, 100, 30);
+		unameF.setFont(new Font("", Font.PLAIN, 20));
+		unameV.setBounds(250, 30, 100, 30);
+		unameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		fnameF.setBounds(50, 60, 100, 30);
+		fnameF.setFont(new Font("", Font.PLAIN, 20));
+		fnameV.setBounds(250, 60, 100, 30);
+		fnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		lnameF.setBounds(50, 90, 100, 30);
+		lnameF.setFont(new Font("", Font.PLAIN, 20));
+		lnameV.setBounds(250, 90, 100, 30);
+		lnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		dobF.setBounds(50, 120, 130, 30);
+		dobF.setFont(new Font("", Font.PLAIN, 20));
+		dobV.setBounds(250, 120, 140, 30);
+		dobV.setFont(new Font("", Font.PLAIN, 20));
+		
+		phoneF.setBounds(50, 150, 150, 30);
+		phoneF.setFont(new Font("", Font.PLAIN, 20));
+		phoneV.setBounds(250, 150, 140, 30);
+		phoneV.setFont(new Font("", Font.PLAIN, 20));
+		
+		collegeF.setBounds(50, 180, 150, 30);
+		collegeF.setFont(new Font("", Font.PLAIN, 20));
+		collegeV.setBounds(250, 180, 140, 30);
+		collegeV.setFont(new Font("", Font.PLAIN, 20));
+		
+		gpaF.setBounds(50, 210, 150, 30);
+		gpaF.setFont(new Font("", Font.PLAIN, 20));
+		gpaV.setBounds(250, 210, 140, 30);
+		gpaV.setFont(new Font("", Font.PLAIN, 20));
+		
+		skillsF.setBounds(50, 240, 150, 30);
+		skillsF.setFont(new Font("", Font.PLAIN, 20));
+		skillsV.setBounds(250, 240, 200, 30);
+		skillsV.setFont(new Font("", Font.PLAIN, 20));
+		
+		frame.add(unameF);
+		frame.add(unameV);
+		frame.add(lnameF);
+		frame.add(lnameV);
+		frame.add(fnameF);
+		frame.add(fnameV);
+		frame.add(dobF);
+		frame.add(dobV);
+		frame.add(phoneF);
+		frame.add(phoneV);
+		frame.add(collegeF);
+		frame.add(collegeV);
+		frame.add(gpaF);
+		frame.add(gpaV);
+		frame.add(skillsF);
+		frame.add(skillsV);
+		
+	}
+	
+	public void profileEdit(JFrame frame) {
+		String fname = "", lname = "", dob = "", college = "", skills = "", phone = "", gpa = "";
+		
+		JButton update = new JButton("Update");
+		update.setBounds(200, 320, 154, 23);
+		update.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		update.setBackground(Color.WHITE);
+		
+		JLabel unameF, unameV, fnameF, lnameF, dobF, collegeF, skillsF, phoneF, gpaF;
+		JTextField fnameV = new JTextField("");
+		JTextField lnameV = new JTextField("");
+		JTextField dobV = new JTextField(""); 
+		JTextField collegeV = new JTextField("");
+		JTextField phoneV = new JTextField("");
+		JTextField gpaV = new JTextField(""); 
+		JTextField skillsV = new JTextField("");
+		
+		unameF = new JLabel("Username:");
+		unameV = new JLabel(student_id);
+		fnameF = new JLabel("First name:");
+		lnameF = new JLabel("Last name:");
+		dobF = new JLabel("Date of Birth:");
+		phoneF = new JLabel("Phone number:");
+		collegeF = new JLabel("College name:");
+		gpaF = new JLabel("CGPA:");
+		skillsF = new JLabel("Skills:");
+		
+		Connection con;
+		Statement s;
+		ResultSet rs;
+		try {
+			con = ConnectionManager.getConnection();
+			s = con.createStatement();
+			rs = s.executeQuery("select * from students where student_id = '" + student_id + "'");
+			rs.next();
+			fnameV.setText(rs.getString(2));
+			lnameV.setText(rs.getString(3));
+			rs = s.executeQuery("select * from studentprofile where student_id = '" + student_id + "'");
+			rs.next();
+			dobV.setText((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
+			collegeV.setText(rs.getString(3));
+			skillsV.setText(rs.getString(4));
+			phoneV.setText(rs.getString(5));
+			gpaV.setText(rs.getString(6));
+			s.close();
+			con.close();
+		} 
+		catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		unameF.setBounds(50, 30, 100, 30);
+		unameF.setFont(new Font("", Font.PLAIN, 20));
+		unameV.setBounds(250, 30, 100, 30);
+		unameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		fnameF.setBounds(50, 60, 100, 30);
+		fnameF.setFont(new Font("", Font.PLAIN, 20));
+		fnameV.setBounds(250, 60, 100, 30);
+		fnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		lnameF.setBounds(50, 90, 100, 30);
+		lnameF.setFont(new Font("", Font.PLAIN, 20));
+		lnameV.setBounds(250, 90, 100, 30);
+		lnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		dobF.setBounds(50, 120, 130, 30);
+		dobF.setFont(new Font("", Font.PLAIN, 20));
+		dobV.setBounds(250, 120, 140, 30);
+		dobV.setFont(new Font("", Font.PLAIN, 20));
+		
+		phoneF.setBounds(50, 150, 150, 30);
+		phoneF.setFont(new Font("", Font.PLAIN, 20));
+		phoneV.setBounds(250, 150, 140, 30);
+		phoneV.setFont(new Font("", Font.PLAIN, 20));
+		
+		collegeF.setBounds(50, 180, 150, 30);
+		collegeF.setFont(new Font("", Font.PLAIN, 20));
+		collegeV.setBounds(250, 180, 140, 30);
+		collegeV.setFont(new Font("", Font.PLAIN, 20));
+		
+		gpaF.setBounds(50, 210, 150, 30);
+		gpaF.setFont(new Font("", Font.PLAIN, 20));
+		gpaV.setBounds(250, 210, 140, 30);
+		gpaV.setFont(new Font("", Font.PLAIN, 20));
+		
+		skillsF.setBounds(50, 240, 150, 30);
+		skillsF.setFont(new Font("", Font.PLAIN, 20));
+		skillsV.setBounds(250, 240, 200, 30);
+		skillsV.setFont(new Font("", Font.PLAIN, 20));
+		
+		update.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					validateProfile(fnameV.getText(), lnameV.getText(), dobV.getText(), phoneV.getText(), collegeV.getText(), gpaV.getText(), skillsV.getText());
+				}
+				catch (Exception e1 ) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		
+		frame.add(unameF);
+		frame.add(unameV);
+		frame.add(lnameF);
+		frame.add(lnameV);
+		frame.add(fnameF);
+		frame.add(fnameV);
+		frame.add(dobF);
+		frame.add(dobV);
+		frame.add(phoneF);
+		frame.add(phoneV);
+		frame.add(collegeF);
+		frame.add(collegeV);
+		frame.add(gpaF);
+		frame.add(gpaV);
+		frame.add(skillsF);
+		frame.add(skillsV);
+		frame.add(update);		
 		
 	}
 	
@@ -233,7 +418,7 @@ public class Student {
 			con = ConnectionManager.getConnection();
 			s1 = con.createStatement();
 			s2 = con.createStatement();
-			r1 = s1.executeQuery("select manager_id, internship_id, position, salary, location from internships where internship_id not in (select internship_id from internshipsapplied where student_id = '" + student_id + "')");
+			r1 = s1.executeQuery("select manager_id, internship_id, position, salary, location from internships where internship_id not in (select internship_id from internshipsapplied where student_id = '" + student_id + "')  order by internship_id");
 			while (r1.next()) {
 				mid = r1.getString(1);
 				iid = r1.getString(2);
@@ -265,6 +450,104 @@ public class Student {
 		scroll.setBounds(15, 70, 450, 150);
 		frame.add(scroll);
 		
+	}
+	
+	public void validateProfile(String fname, String lname, String dob, String phone, String college, String gpa, String skills) {
+		String message = "";
+		if (fname.length() == 0) {
+			message = message + "First name cannot be empty!\n";
+		}
+		else {
+			for(char c : fname.toCharArray()) {
+				if (!Character.isAlphabetic(c)) {
+					message = message + "First name cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
+		for(char c : lname.toCharArray()) {
+			if (!Character.isAlphabetic(c)) {
+				message = message + "Last name cannot have digits or special characters!\n";
+				break;
+			}
+		}
+		
+		if (dob.length() == 0 || dob.equals("dd-mmm-yyyy")) {
+			message = message + "Date of Birth cannot be empty!\n";
+		}
+		else if (dob.length() !=  11 ) {
+			message += "Enter a valid Date of Birth!\n";
+		}
+
+		if (phone.length() == 0) {
+			message = message + "Phone number cannot be empty!\n";
+		}
+		else {
+			try {
+				Integer.parseInt(phone);
+				if (phone.length() != 10) {
+					message += "Phone number must have exactly 10 digits!\n";
+				}
+			}
+			catch (NumberFormatException e) {
+				message += "Phone number cannot have alphabets or special characters!\n";
+			}
+			catch (Exception e) {
+				message += "Phone number must have exactly 10 digits!\n";
+			}
+		}
+		
+		if (college.length() == 0) {
+			message = message + "College name cannot be empty!\n";
+		}
+		else {
+			for(char c : college.replaceAll(" ", "").toCharArray()) {
+				if (!Character.isAlphabetic(c)  ) {
+					message = message + "College name cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
+		if (gpa.length() == 0) {
+			message = message + "CGPA cannot be empty!\n";
+		}
+		else {
+			try {
+				float f = Float.parseFloat(gpa);
+				if (f > 10 || f < 0) {
+					message += "CGPA must lie between 0 to 10!\n";
+				}
+			}
+			catch (Exception e) {
+				message += "CGPA must be a valid Number!\n";
+			}
+		}
+		
+		if (skills.length() == 0) {
+			message = message + "Skills cannot be empty!\n";
+		}
+		
+		if (message.length() != 0) {
+			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+		}
+		else {
+			Connection con;
+			Statement s;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				s.executeQuery("update studentprofile set dob = '" + dob + "', collegename = '" + college + "', skills = '" + skills + "', phonenumber = " + phone + ", cgpa = " + gpa + " where student_id = '" + student_id + "'");
+				s.executeQuery("commit");
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			JOptionPane.showMessageDialog(new JFrame(), "Updated successfully!");
+		}
 	}
 	
 }
