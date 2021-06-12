@@ -558,6 +558,7 @@ public class Student {
 			try {
 				con = ConnectionManager.getConnection();
 				s = con.createStatement();
+				s.executeQuery("update students set firstname = '" + fname + "', lastname = '" + lname + "' where student_id = '" + student_id + "'");
 				s.executeQuery("update studentprofile set dob = '" + dob + "', collegename = '" + college + "', skills = '" + skills + "', phonenumber = " + phone + ", cgpa = " + gpa + " where student_id = '" + student_id + "'");
 				s.executeQuery("commit");
 				s.close();
