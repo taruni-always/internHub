@@ -7,7 +7,7 @@ public class Caller {
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame();
-		new Student(frame, "shru15");
+		new Manager(frame, "joce123");
 	}
 
 }

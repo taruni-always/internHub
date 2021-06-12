@@ -132,7 +132,15 @@ public class Manager {
 	}
 	
 	public void profileView(JFrame frame) {
-		String fname = "", lname = "", company = "", designation = "", phone = "";
+		JLabel unameF, unameV, lnameF, lnameV = null, fnameF, fnameV = null, companyF, companyV = null, designationF, designationV = null, phoneF, phoneV = null;
+		unameF = new JLabel("Username:");
+		unameV = new JLabel(manager_id);
+		fnameF = new JLabel("First name:");
+		lnameF = new JLabel("Last name:");
+		companyF = new JLabel("Company name");
+		designationF = new JLabel("Designation:");
+		phoneF = new JLabel("Phone number:");
+		
 		Connection con;
 		Statement s;
 		ResultSet rs;
@@ -141,36 +149,62 @@ public class Manager {
 			s = con.createStatement();
 			rs = s.executeQuery("select * from projectmanagers where manager_id = '" + manager_id + "'");
 			rs.next();
-			fname = rs.getString(2);
-			lname = rs.getString(3);
+			fnameV = new JLabel(rs.getString(2));
+			lnameV = new JLabel(rs.getString(3));
 			rs = s.executeQuery("select * from managerprofile where manager_id = '" + manager_id + "'");
 			rs.next();
-			company = rs.getString(2);
-			designation = rs.getString(3);
-			phone = rs.getString(4);
+			companyV = new JLabel(rs.getString(2));
+			designationV = new JLabel(rs.getString(3));
+			phoneV = new JLabel(rs.getString(4));
 			s.close();
 			con.close();
 		} 
 		catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		String data[][] = {{"Username:", manager_id}, 
-				{"First name:", fname}, 
-				{"Last name:", lname}, 
-				{"Company name", company}, 
-				{"Designation:", designation},
-				{"Phone number:", phone}};
-		String col[] = {"FIELD", "VALUE"};
-		JTable details = new JTable(data, col);
-		details.setBounds(100, 70, 200, 140);
-		details.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		details.setFont(new Font("", Font.PLAIN, 15));
-		details.getColumnModel().getColumn(0).setPreferredWidth(150);
-		details.getColumnModel().getColumn(1).setPreferredWidth(150);
-		JScrollPane scroll = new JScrollPane(details);
-		scroll.setBounds(90, 70, 280, 134);
-		frame.add(scroll);
 		
+		unameF.setBounds(50, 30, 100, 30);
+		unameF.setFont(new Font("", Font.PLAIN, 20));
+		unameV.setBounds(250, 30, 100, 30);
+		unameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		fnameF.setBounds(50, 70, 100, 30);
+		fnameF.setFont(new Font("", Font.PLAIN, 20));
+		fnameV.setBounds(250, 70, 100, 30);
+		fnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		lnameF.setBounds(50, 110, 100, 30);
+		lnameF.setFont(new Font("", Font.PLAIN, 20));
+		lnameV.setBounds(250, 110, 100, 30);
+		lnameV.setFont(new Font("", Font.PLAIN, 20));
+		
+		companyF.setBounds(50, 150, 150, 30);
+		companyF.setFont(new Font("", Font.PLAIN, 20));
+		companyV.setBounds(250, 150, 140, 30);
+		companyV.setFont(new Font("", Font.PLAIN, 20));
+		
+		phoneF.setBounds(50, 190, 150, 30);
+		phoneF.setFont(new Font("", Font.PLAIN, 20));
+		phoneV.setBounds(250, 190, 140, 30);
+		phoneV.setFont(new Font("", Font.PLAIN, 20));
+		
+		designationF.setBounds(50, 230, 150, 30);
+		designationF.setFont(new Font("", Font.PLAIN, 20));
+		designationV.setBounds(250, 230, 180, 30);
+		designationV.setFont(new Font("", Font.PLAIN, 20));
+		
+		frame.add(unameF);
+		frame.add(unameV);
+		frame.add(lnameF);
+		frame.add(lnameV);
+		frame.add(fnameF);
+		frame.add(fnameV);
+		frame.add(companyF);
+		frame.add(companyV);
+		frame.add(phoneF);
+		frame.add(phoneV);
+		frame.add(designationF);
+		frame.add(designationV);
 	}
 	
 	public void internshipsPostedView(JFrame frame) {
