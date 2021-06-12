@@ -114,8 +114,19 @@ public class Student {
 				internshipsAppliedView(frame);
 			}
 		});
+		deleteInternshipsApplied = new JMenuItem("Delete internships applied");
+		deleteInternshipsApplied.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsAppliedDeleted(frame);
+			}
+		});
 		
 		internshipsApplied.add(viewInternshipsApplied);
+		internshipsApplied.add(deleteInternshipsApplied);
 		
 		viewInternships = new JMenuItem("View available internships");
 		viewInternships.addActionListener(new ActionListener() {
@@ -411,6 +422,7 @@ public class Student {
 		DefaultTableModel dtm = new DefaultTableModel(0, 0);
 		dtm.setColumnIdentifiers(header);
 		table.setModel(dtm);
+		
 		Connection con;
 		Statement s1, s2;
 		ResultSet r1, r2;
@@ -548,6 +560,90 @@ public class Student {
 			}
 			JOptionPane.showMessageDialog(new JFrame(), "Updated successfully!");
 		}
+	}
+	
+	public void internshipsAppliedDeleted(JFrame frame) {
+		JTextField iidT = new JTextField();
+		iidT.setBounds(150, 150, 150, 40);
+		iidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id of the internship which you want to remove the application </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton delete = new JButton("Delete");
+		
+		delete.setFont(new Font("Delete", Font.PLAIN, 15));
+		delete.setBounds(170, 220, 100, 30);
+		delete.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		delete.setBackground(Color.WHITE);
+		delete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = "";
+				if (iidT.getText().length() == 0) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				else {
+					try {
+						int iid = Integer.parseInt(iidT.getText());
+						Connection con;
+						Statement s1, s2;
+						ResultSet r1, r2;
+						try {
+							con = ConnectionManager.getConnection();
+							s1 = con.createStatement();
+							r1 = s1.executeQuery("select * from internships where internship_id = " + iid);
+							if (! r1.next()) {
+								message = message + "internship_id does not exist!\n";
+							}
+							else {
+								r2 = s1.executeQuery("select * from internshipsapplied where internship_id = " + iid + " and student_id = '" + student_id + "'");
+								if (!r2.next() ) {
+									message = message + "You have not applied to this internship yet!\n";
+								}
+							}
+							s1.close();
+							con.close();
+						} 
+						catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					catch (Exception e1) {
+						message = message + "Enter a valid internship_id!\n";
+					}
+				}
+				
+				if ( message.length() == 0) {
+					int iid = Integer.parseInt(iidT.getText());
+					Connection con;
+					Statement s;
+					ResultSet r;
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						s.executeQuery("delete from internshipsapplied where internship_id = " + iid + " and student_id = '" + student_id + "' ");
+						s.executeQuery("commit");
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					delete.setText("");
+					JOptionPane.showMessageDialog(new JFrame(), "Deleted successfully!");
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		
+		
+		frame.add(iidT);
+		frame.add(prompt);
+		frame.add(delete);		
 	}
 	
 }
