@@ -138,7 +138,17 @@ public class Student {
 				internshipsView(frame);
 			}
 		});
+		
 		applyInternships = new JMenuItem("Apply for new internships");
+		applyInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsApply(frame);
+			}
+		});
 		internships.add(viewInternships);
 		internships.add(applyInternships);
 		
@@ -244,9 +254,7 @@ public class Student {
 		
 	}
 	
-	public void profileEdit(JFrame frame) {
-		String fname = "", lname = "", dob = "", college = "", skills = "", phone = "", gpa = "";
-		
+	public void profileEdit(JFrame frame) {		
 		JButton update = new JButton("Update");
 		update.setBounds(200, 320, 154, 23);
 		update.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -572,7 +580,6 @@ public class Student {
 		prompt.setFont(new Font("", Font.PLAIN, 20));
 		
 		JButton delete = new JButton("Delete");
-		
 		delete.setFont(new Font("Delete", Font.PLAIN, 15));
 		delete.setBounds(170, 220, 100, 30);
 		delete.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -587,22 +594,22 @@ public class Student {
 					try {
 						int iid = Integer.parseInt(iidT.getText());
 						Connection con;
-						Statement s1, s2;
+						Statement s;
 						ResultSet r1, r2;
 						try {
 							con = ConnectionManager.getConnection();
-							s1 = con.createStatement();
-							r1 = s1.executeQuery("select * from internships where internship_id = " + iid);
+							s = con.createStatement();
+							r1 = s.executeQuery("select * from internships where internship_id = " + iid);
 							if (! r1.next()) {
 								message = message + "internship_id does not exist!\n";
 							}
 							else {
-								r2 = s1.executeQuery("select * from internshipsapplied where internship_id = " + iid + " and student_id = '" + student_id + "'");
+								r2 = s.executeQuery("select * from internshipsapplied where internship_id = " + iid + " and student_id = '" + student_id + "'");
 								if (!r2.next() ) {
 									message = message + "You have not applied to this internship yet!\n";
 								}
 							}
-							s1.close();
+							s.close();
 							con.close();
 						} 
 						catch (Exception e1) {
@@ -618,7 +625,6 @@ public class Student {
 					int iid = Integer.parseInt(iidT.getText());
 					Connection con;
 					Statement s;
-					ResultSet r;
 					try {
 						con = ConnectionManager.getConnection();
 						s = con.createStatement();
@@ -630,7 +636,7 @@ public class Student {
 					catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					delete.setText("");
+					iidT.setText("");
 					JOptionPane.showMessageDialog(new JFrame(), "Deleted successfully!");
 				}
 				else {
@@ -640,10 +646,110 @@ public class Student {
 			}
 		});
 		
+		iidT.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          delete.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
 		
 		frame.add(iidT);
 		frame.add(prompt);
 		frame.add(delete);		
 	}
 	
+	public void internshipsApply(JFrame frame) {
+		JTextField iidT = new JTextField();
+		iidT.setBounds(150, 150, 150, 40);
+		iidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id of the internship which you want to apply for </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton apply = new JButton("Apply");
+		apply.setFont(new Font("Apply", Font.PLAIN, 15));
+		apply.setBounds(170, 220, 100, 30);
+		apply.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		apply.setBackground(Color.WHITE);
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = "";
+				if (iidT.getText().length() == 0) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				else {
+					try {
+						int iid = Integer.parseInt(iidT.getText());
+						Connection con;
+						Statement s;
+						ResultSet r1, r2;
+						try {
+							con = ConnectionManager.getConnection();
+							s = con.createStatement();
+							r1 = s.executeQuery("select * from internships where internship_id = " + iid);
+							if (! r1.next()) {
+								message = message + "internship_id does not exist!\n";
+							}
+							else {
+								r2 = s.executeQuery("select * from internshipsapplied where internship_id = " + iid + " and student_id = '" + student_id + "'");
+								if (r2.next() ) {
+									message = message + "You have already applied to this internship!\n";
+								}
+							}
+							s.close();
+							con.close();
+						} 
+						catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					catch (Exception e1) {
+						message = message + "Enter a valid internship_id!\n";
+					}
+				}
+				
+				if ( message.length() == 0) {
+					int iid = Integer.parseInt(iidT.getText());
+					Connection con;
+					Statement s;
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						s.executeQuery("insert into internshipsapplied values ('" + student_id + "', " + iid + ", 'no')");
+						s.executeQuery("commit");
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					iidT.setText("");
+					JOptionPane.showMessageDialog(new JFrame(), "Applied successfully!");
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		});
+		
+		iidT.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          apply.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
+		
+		frame.add(iidT);
+		frame.add(prompt);
+		frame.add(apply);		
+	}
 }
