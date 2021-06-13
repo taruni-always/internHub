@@ -189,10 +189,16 @@ public class Manager {
 			fnameV = new JLabel(rs.getString(2));
 			lnameV = new JLabel(rs.getString(3));
 			rs = s.executeQuery("select * from managerprofile where manager_id = '" + manager_id + "'");
-			rs.next();
-			companyV = new JLabel(rs.getString(2));
-			designationV = new JLabel(rs.getString(3));
-			phoneV = new JLabel(rs.getString(4));
+			if (rs.next()) {
+				companyV = new JLabel(rs.getString(2));
+				designationV = new JLabel(rs.getString(3));
+				phoneV = new JLabel(rs.getString(4));
+			}
+			else {
+				companyV = new JLabel("");
+				designationV = new JLabel("");
+				phoneV = new JLabel("");
+			}
 			s.close();
 			con.close();
 		} 
@@ -370,10 +376,16 @@ public class Manager {
 			fnameV.setText(rs.getString(2));
 			lnameV.setText(rs.getString(3));
 			rs = s.executeQuery("select * from managerprofile where manager_id = '" + manager_id + "'");
-			rs.next();
-			companyV.setText(rs.getString(2));
-			designationV.setText(rs.getString(3));
-			phoneV.setText(rs.getString(4));
+			if (rs.next()) {
+				companyV.setText(rs.getString(2));
+				designationV.setText(rs.getString(3));
+				phoneV.setText(rs.getString(4));
+			}
+			else {
+				companyV.setText("");
+				designationV.setText("");
+				phoneV.setText("");
+			}
 			s.close();
 			con.close();
 		} 
@@ -462,17 +474,14 @@ public class Manager {
 			message = message + "Phone number cannot be empty!\n";
 		}
 		else {
-			try {
-				Integer.parseInt(phone);
-				if (phone.length() != 10) {
-					message += "Phone number must have exactly 10 digits!\n";
+			for(char c : phone.toCharArray()) {
+				if (!Character.isDigit(c)) {
+					message = message + "Phone number cannot have alphabets or special characters!\n";
+					break;
 				}
 			}
-			catch (NumberFormatException e) {
-				message += "Phone number cannot have alphabets or special characters!\n";
-			}
-			catch (Exception e) {
-				message += "Phone number must have exactly 10 digits!\n";
+			if (phone.length() != 10) {
+					message += "Phone number must have exactly 10 digits!\n";
 			}
 		}
 		
@@ -506,11 +515,16 @@ public class Manager {
 		else {
 			Connection con;
 			Statement s;
+			ResultSet r;
 			try {
 				con = ConnectionManager.getConnection();
 				s = con.createStatement();
 				s.executeQuery("update projectmanagers set firstname = '" + fname + "', lastname = '" + lname + "' where manager_id = '" + manager_id + "'");
-				s.executeQuery("update managerprofile set companyname = '" + company + "', designation = '" + designation + "', phonenumber = " + phone + " where manager_id = '" + manager_id + "'");
+				s.executeQuery("commit");
+				r = s.executeQuery("update managerprofile set companyname = '" + company + "', designation = '" + designation + "', phonenumber = " + phone + " where manager_id = '" + manager_id + "'");
+				if (!r.next()) {
+					s.executeQuery("insert into managerprofile values('" + manager_id + "', '" + company + "', '" + designation + "', " + phone + ")");
+				}
 				s.executeQuery("commit");
 				s.close();
 				con.close();

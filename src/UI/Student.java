@@ -182,12 +182,21 @@ public class Student {
 			fnameV = new JLabel(rs.getString(2));
 			lnameV = new JLabel(rs.getString(3));
 			rs = s.executeQuery("select * from studentprofile where student_id = '" + student_id + "'");
-			rs.next();
-			dobV = new JLabel((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
-			collegeV = new JLabel (rs.getString(3));
-			skillsV = new JLabel(rs.getString(4));
-			phoneV = new JLabel(rs.getString(5));
-			gpaV = new JLabel(rs.getString(6));
+			if (rs.next()) {
+				dobV = new JLabel((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
+				collegeV = new JLabel (rs.getString(3));
+				skillsV = new JLabel(rs.getString(4));
+				phoneV = new JLabel(rs.getString(5));
+				gpaV = new JLabel(rs.getString(6));
+			}
+			else {
+				dobV = new JLabel("");
+				collegeV = new JLabel ("");
+				skillsV = new JLabel("");
+				phoneV = new JLabel("");
+				gpaV = new JLabel("");
+			}
+			
 			s.close();
 			con.close();
 		} 
@@ -290,12 +299,20 @@ public class Student {
 			fnameV.setText(rs.getString(2));
 			lnameV.setText(rs.getString(3));
 			rs = s.executeQuery("select * from studentprofile where student_id = '" + student_id + "'");
-			rs.next();
-			dobV.setText((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
-			collegeV.setText(rs.getString(3));
-			skillsV.setText(rs.getString(4));
-			phoneV.setText(rs.getString(5));
-			gpaV.setText(rs.getString(6));
+			if (rs.next()) {
+				dobV.setText((new SimpleDateFormat("dd-MMM-YYYY")).format(rs.getDate(2)));
+				collegeV.setText(rs.getString(3));
+				skillsV.setText(rs.getString(4));
+				phoneV.setText(rs.getString(5));
+				gpaV.setText(rs.getString(6));
+			}
+			else {
+				dobV.setText("dd-mmm-yyyy");
+				collegeV.setText("");
+				skillsV.setText("");
+				phoneV.setText("");
+				gpaV.setText("");
+			}
 			s.close();
 			con.close();
 		} 
@@ -504,17 +521,14 @@ public class Student {
 			message = message + "Phone number cannot be empty!\n";
 		}
 		else {
-			try {
-				Integer.parseInt(phone);
-				if (phone.length() != 10) {
-					message += "Phone number must have exactly 10 digits!\n";
+			for(char c : phone.toCharArray()) {
+				if (!Character.isDigit(c)) {
+					message = message + "Phone number cannot have alphabets or special characters!\n";
+					break;
 				}
 			}
-			catch (NumberFormatException e) {
-				message += "Phone number cannot have alphabets or special characters!\n";
-			}
-			catch (Exception e) {
-				message += "Phone number must have exactly 10 digits!\n";
+			if (phone.length() != 10) {
+					message += "Phone number must have exactly 10 digits!\n";
 			}
 		}
 		
@@ -555,11 +569,16 @@ public class Student {
 		else {
 			Connection con;
 			Statement s;
+			ResultSet r;
 			try {
 				con = ConnectionManager.getConnection();
 				s = con.createStatement();
 				s.executeQuery("update students set firstname = '" + fname + "', lastname = '" + lname + "' where student_id = '" + student_id + "'");
-				s.executeQuery("update studentprofile set dob = '" + dob + "', collegename = '" + college + "', skills = '" + skills + "', phonenumber = " + phone + ", cgpa = " + gpa + " where student_id = '" + student_id + "'");
+				s.executeQuery("commit");
+				r = s.executeQuery("update studentprofile set dob = '" + dob + "', collegename = '" + college + "', skills = '" + skills + "', phonenumber = " + phone + ", cgpa = " + gpa + " where student_id = '" + student_id + "'");
+				if ( ! r.next()) {
+					s.executeQuery("insert into studentprofile values('" + student_id + "', '" + dob + "', '" + college + "', '" + skills + "', " + phone + ", " + gpa + ")");
+				}
 				s.executeQuery("commit");
 				s.close();
 				con.close();
