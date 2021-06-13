@@ -136,6 +136,15 @@ public class Manager {
 			}
 		});
 		approveInternshipRequests = new JMenuItem("Approve internship requests");
+		approveInternshipRequests.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipRequestsApprove(frame);
+			}
+		});
 		internshipRequestsMenu.add(viewInternshipRequests);
 		internshipRequestsMenu.add(approveInternshipRequests);
 		
@@ -332,15 +341,140 @@ public class Manager {
 		}
 		table.setBounds(100, 70, 250, 100);
 		table.getColumnModel().getColumn(0).setPreferredWidth(40);
-		table.getColumnModel().getColumn(1).setPreferredWidth(180);
-		table.getColumnModel().getColumn(2).setPreferredWidth(60);
-		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		table.getColumnModel().getColumn(2).setPreferredWidth(100);
 		table.getColumnModel().getColumn(3).setPreferredWidth(250);
+		table.getColumnModel().getColumn(4).setPreferredWidth(100);
+		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFont(new Font("", Font.PLAIN, 15));
 		JScrollPane scroll = new JScrollPane(table);
 		scroll.setBounds(15, 70, 450, 150);
 		frame.add(scroll);
+		
+	}
+	
+	public void internshipRequestsApprove(JFrame frame) {
+		JTextField iidT = new JTextField("internship_id");
+		iidT.setBounds(80, 150, 150, 40);
+		iidT.setFont(new Font("student_id", Font.PLAIN, 16));
+		
+		JTextField sidT = new JTextField("student_id");
+		sidT.setBounds(260, 150, 150, 40);
+		sidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id and student_id which you want to approve </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton approve = new JButton("Approve");
+		approve.setBounds(160, 250, 154, 23);
+		approve.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		approve.setBackground(Color.WHITE);
+		approve.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean iidexists = false, sidexists = false, isValid = true;
+				Connection con;
+				Statement s;
+				ResultSet rs;
+				String message = "", iid = iidT.getText(), sid = sidT.getText(); 
+				
+				
+				if (iid.length() == 0 || iid == null) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				for (char c : iid.toCharArray()) {
+					if (!Character.isDigit(c)) {
+						message = message + "internship_id cannot have alphabets or special characters!\n";
+						isValid = false;
+						break;
+					}
+				}
+				if (isValid) {
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						rs = s.executeQuery("select * from internships where internship_id = " + iid);
+						if (!rs.next()) {
+							message = message + "internship_id does not exist!\n";
+						}
+						else {
+							rs = s.executeQuery("select * from internships where internship_id = " + iid + " and manager_id = '" + manager_id + "'");
+							if (!rs.next()) {
+								message = message + "This internship_id has not been posted by you, you cannot delete it!\n";
+							}
+							else {
+								iidexists = true;
+							}
+						}
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				if (sid.length() == 0 || sid.equals("student_id") || sid == null) {
+					message = message + "student_id cannot be empty!\n";
+				}
+				else {
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						rs = s.executeQuery("select * from students where student_id = '" + sid + "'");
+						if (!rs.next()) {
+							message = message + "student_id does not exist!\n";
+						}
+						else {
+							rs = s.executeQuery("select * from internshipsapplied where student_id = '" + sid + "'");
+							if (!rs.next()) {
+								message = message + "This student has not applied for any internship!\n";
+							}
+							else {
+								sidexists = true;
+							}
+						}
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				if (sidexists && iidexists) {
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						rs = s.executeQuery("delete from internshipsapplied where student_id = '" + sid + "' and internship_id = " + iid);
+						if (!rs.next()) {
+							message = message + "This student has not applied to this internship!\n";
+						}
+						else {
+							s.executeQuery("commit");
+						}
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				if (message.length() != 0) {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), "Approved successfully!");
+				}
+			}
+		});
+		
+		frame.add(prompt);
+		frame.add(iidT);
+		frame.add(sidT);
+		frame.add(approve);
 		
 	}
 	
