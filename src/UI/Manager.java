@@ -14,7 +14,7 @@ public class Manager {
 	public String manager_id;
 	public JMenuBar menuBar;
 	public JMenu profileMenu, internshipsMenu, internshipRequestsMenu;
-	public JMenuItem viewProfile, editProfile, viewInternships, postInternships, editInternships, viewInternshipRequests, approveInternshipRequests;
+	public JMenuItem viewProfile, editProfile, viewInternships, postInternships, editInternships, deleteInternships, viewInternshipRequests, approveInternshipRequests;
 	public JButton back;
 	public JLabel welcome;
 	
@@ -67,7 +67,6 @@ public class Manager {
 				profileView(frame);
 			}
 		});
-		
 		editProfile = new JMenuItem("Edit profile");
 		editProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -92,10 +91,39 @@ public class Manager {
 			}
 		});
 		postInternships = new JMenuItem("Post new internships");
+		postInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsPostNew(frame);
+			}
+		});
 		editInternships = new JMenuItem("Edit internships posted");
+		editInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsPostedEdit(frame);
+			}
+		});
+		deleteInternships = new JMenuItem("Delete internships posted");
+		deleteInternships.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				welcome.setText("");
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsPostedDelete(frame);
+			}
+		});
 		internshipsMenu.add(viewInternships);
 		internshipsMenu.add(editInternships);
 		internshipsMenu.add(postInternships);
+		internshipsMenu.add(deleteInternships);
 		
 		viewInternshipRequests = new JMenuItem("View internships requests");
 		viewInternshipRequests.addActionListener(new ActionListener() {
@@ -125,7 +153,7 @@ public class Manager {
 			}
 		});
 		
-		welcome = new JLabel("Welcome " +name + "!");
+		welcome = new JLabel("Welcome " + name + "!");
 		welcome.setBounds(60, 120, 400, 40);
 		Font promptFont = welcome.getFont();
 		int stringWidth = welcome.getFontMetrics(promptFont).stringWidth("Welcome <name>!");
@@ -494,4 +522,421 @@ public class Manager {
 		}
 	}
 	
+	public void internshipsPostNew(JFrame frame) {
+		JTextField iidT = new JTextField();
+		iidT.setBounds(150, 150, 150, 40);
+		iidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id of the internship which you want to post </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton post = new JButton("Post");
+		post.setBounds(150, 220, 154, 23);
+		post.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		post.setBackground(Color.WHITE);
+		post.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = "";
+				if (iidT.getText().length() == 0) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				else {
+					try {
+						int iid = Integer.parseInt(iidT.getText());
+						Connection con;
+						Statement s;
+						ResultSet r;
+						try {
+							con = ConnectionManager.getConnection();
+							s = con.createStatement();
+							r = s.executeQuery("select * from internships where internship_id = " + iid);
+							if (r.next()) {
+								message = message + "internship_id already exists! Please choose another internship_id\n";
+							}
+							s.close();
+							con.close();
+						} 
+						catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					catch (Exception e1) {
+						message = message + "Enter a valid internship_id!\n";
+					}
+				}
+				
+				if ( message.length() == 0) {
+					welcome.setText("");
+					frame.getContentPane().removeAll();
+					frame.repaint();
+					frame.add(back);
+					internshipsPostNewEditPage(frame, iidT.getText(), "post");
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});	
+		
+		iidT.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          post.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
+		
+		frame.add(prompt);
+		frame.add(post);
+		frame.add(iidT);
+		
+	}
+	
+	public void internshipsPostNewEditPage(JFrame frame, String iid, String type ) {
+		JLabel iidF, iidV, positionF, salaryF, locationF, skillsF;
+		iidF = new JLabel("Internship_id:");
+		iidV = new JLabel(iid);
+		positionF = new JLabel("Role:");
+		salaryF = new JLabel("Salary:");
+		locationF = new JLabel("Location:");
+		skillsF = new JLabel("Skills Required:");
+		
+		JTextField positionV = new JTextField("");
+		JTextField locationV = new JTextField(""); 
+		JTextField salaryV = new JTextField("");
+		JTextField skillsV = new JTextField("");
+		
+		if (type.equals("edit")) {
+			Connection con;
+			Statement s;
+			ResultSet r;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				r = s.executeQuery("select * from internships where internship_id = " + iid);
+				r.next();
+				positionV.setText(r.getString(3));
+				salaryV.setText(r.getString(4));
+				locationV.setText(r.getString(5));
+				skillsV.setText(r.getString(6));
+				s.executeQuery("commit");
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+		
+		JButton post = new JButton("Post");
+		if (type.equals("edit")) {
+			post.setText("Update");
+		}
+		post.setBounds(150, 260, 154, 23);
+		post.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		post.setBackground(Color.WHITE);
+		post.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				internshipsValidate(iid, positionV.getText(), locationV.getText(), salaryV.getText(), skillsV.getText(), type);
+			}
+		});
+		
+		iidF.setBounds(50, 30, 200, 30);
+		iidF.setFont(new Font("", Font.PLAIN, 20));
+		iidV.setBounds(250, 30, 100, 30);
+		iidV.setFont(new Font("", Font.PLAIN, 20));
+		
+		positionF.setBounds(50, 70, 100, 30);
+		positionF.setFont(new Font("", Font.PLAIN, 20));
+		positionV.setBounds(250, 70, 150, 30);
+		positionV.setFont(new Font("", Font.PLAIN, 20));
+		
+		salaryF.setBounds(50, 110, 100, 30);
+		salaryF.setFont(new Font("", Font.PLAIN, 20));
+		salaryV.setBounds(250, 110, 150, 30);
+		salaryV.setFont(new Font("", Font.PLAIN, 20));
+		
+		locationF.setBounds(50, 150, 100, 30);
+		locationF.setFont(new Font("", Font.PLAIN, 20));
+		locationV.setBounds(250, 150, 150, 30);
+		locationV.setFont(new Font("", Font.PLAIN, 20));
+		
+		skillsF.setBounds(50, 190, 200, 30);
+		skillsF.setFont(new Font("", Font.PLAIN, 20));
+		skillsV.setBounds(250, 190, 150, 30);
+		skillsV.setFont(new Font("", Font.PLAIN, 20));
+		
+		frame.add(post);
+		frame.add(locationF);
+		frame.add(locationV);
+		frame.add(skillsF);
+		frame.add(skillsV);
+		frame.add(positionF);
+		frame.add(positionV);
+		frame.add(salaryF);
+		frame.add(salaryV);
+		frame.add(iidF);
+		frame.add(iidV);
+	}
+	
+	public void internshipsValidate(String iid, String position, String location, String salary, String skills, String type) {
+		String message = "";
+		
+		if (position == null || position.length() == 0) {
+			message = message + "Position cannot be empty!\n";
+		}
+		else {
+			for(char c : position.replaceAll(" ", "").toCharArray()) {
+				if (!Character.isAlphabetic(c)) {
+					message = message + "Position cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
+		if (location == null || location.length() == 0) {
+			message = message + "Location cannot be empty!\n";
+		}
+		else {
+			for(char c : location.replaceAll(" ", "").toCharArray()) {
+				if (!Character.isAlphabetic(c)) {
+					message = message + "Location cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
+		if (skills == null || skills.length() == 0) {
+			message = message + "Skills required cannot be empty!\n";
+		}
+		else {
+			for(char c : skills.replaceAll(" ", "").toCharArray()) {
+				if (!Character.isAlphabetic(c)) {
+					message = message + "Skills required cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
+		if (salary == null || salary.length() == 0) {
+			message = message + "Salary number cannot be empty!\n";
+		}
+		else {
+			try {
+				Integer.parseInt(salary);
+			}
+			catch (NumberFormatException e) {
+				message += "Salary cannot have alphabets or special characters!\n";
+			}
+		}
+		
+		if (message.length() != 0) {
+			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		else {
+			Connection con;
+			Statement s;
+			try {
+				con = ConnectionManager.getConnection();
+				s = con.createStatement();
+				if (type.equals("post")) {
+					s.executeQuery("insert into internships values('" + manager_id + "', " + iid + ", '" + position + "', " + salary + ", '" + location + "', '" + skills + "')");
+				}
+				else {
+					s.executeQuery("update internships set position = '" + position + "', salary =" + salary + ", location = '" + location + "', skills_required = '" + skills + "' where internship_id = " + iid + "and manager_id = '" + manager_id + "'");
+				}
+				s.executeQuery("commit");
+				s.close();
+				con.close();
+			} 
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			if (type.equals("post")) {
+				frame.getContentPane().removeAll();
+				frame.repaint();
+				frame.add(back);
+				internshipsPostNew(frame);
+				JOptionPane.showMessageDialog(new JFrame(), "Posted successfully!");
+			}
+			else {
+				JOptionPane.showMessageDialog(new JFrame(), "Updated successfully!");
+			}
+			
+		}
+		
+	}
+	
+	public void internshipsPostedEdit(JFrame frame) {
+		JTextField iidT = new JTextField();
+		iidT.setBounds(150, 150, 150, 40);
+		iidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id of the internship which you want to edit </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton edit = new JButton("Update");
+		edit.setBounds(150, 220, 154, 23);
+		edit.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		edit.setBackground(Color.WHITE);
+		edit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = "";
+				if (iidT.getText().length() == 0) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				else {
+					try {
+						int iid = Integer.parseInt(iidT.getText());
+						Connection con;
+						Statement s;
+						ResultSet r;
+						try {
+							con = ConnectionManager.getConnection();
+							s = con.createStatement();
+							r = s.executeQuery("select * from internships where internship_id = " + iid);
+							if (!r.next()) {
+								message = message + "internship_id does not exist!\n";
+							}
+							else {
+								r = s.executeQuery("select * from internships where internship_id = " + iid + " and manager_id = '" + manager_id + "'");
+								if (!r.next() ) {
+									message = message + "You have not posted this internship, you cannot edit it!\n";
+								}
+							}
+							s.close();
+							con.close();
+						} 
+						catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					catch (Exception e1) {
+						message = message + "Enter a valid internship_id!\n";
+					}
+				}
+				
+				if ( message.length() == 0) {
+					welcome.setText("");
+					frame.getContentPane().removeAll();
+					frame.repaint();
+					frame.add(back);
+					internshipsPostNewEditPage(frame, iidT.getText(), "edit");
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});	
+		
+		iidT.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          edit.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
+		
+		frame.add(prompt);
+		frame.add(edit);
+		frame.add(iidT);
+	}
+	
+	public void internshipsPostedDelete(JFrame frame) {
+		JTextField iidT = new JTextField();
+		iidT.setBounds(150, 150, 150, 40);
+		iidT.setFont(new Font("", Font.PLAIN, 16));
+		
+		JLabel prompt = new JLabel("<html><p style=\\\"text-align:center;> Enter the internship_id of the internship which you want to delete </p>");
+		prompt.setBounds(20, 50, 430, 50);
+		prompt.setFont(new Font("", Font.PLAIN, 20));
+		
+		JButton delete = new JButton("Delete");
+		delete.setFont(new Font("Delete", Font.PLAIN, 15));
+		delete.setBounds(170, 220, 100, 30);
+		delete.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		delete.setBackground(Color.WHITE);
+		delete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = "";
+				if (iidT.getText().length() == 0) {
+					message = message + "internship_id cannot be empty!\n";
+				}
+				else {
+					try {
+						int iid = Integer.parseInt(iidT.getText());
+						Connection con;
+						Statement s;
+						ResultSet r1, r2;
+						try {
+							con = ConnectionManager.getConnection();
+							s = con.createStatement();
+							r1 = s.executeQuery("select * from internships where internship_id = " + iid);
+							if (! r1.next()) {
+								message = message + "internship_id does not exist!\n";
+							}
+							else {
+								r2 = s.executeQuery("select * from internships where internship_id = " + iid + " and manager_id = '" + manager_id + "'");
+								if (!r2.next() ) {
+									message = message + "You have not posted this internship, you cannot delete it!\n";
+								}
+							}
+							s.close();
+							con.close();
+						} 
+						catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+					catch (Exception e1) {
+						message = message + "Enter a valid internship_id!\n";
+					}
+				}
+				
+				if ( message.length() == 0) {
+					int iid = Integer.parseInt(iidT.getText());
+					Connection con;
+					Statement s;
+					try {
+						con = ConnectionManager.getConnection();
+						s = con.createStatement();
+						s.executeQuery("delete from internships where internship_id = " + iid + " and manager_id = '" + manager_id + "' ");
+						s.executeQuery("commit");
+						s.close();
+						con.close();
+					} 
+					catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					iidT.setText("");
+					JOptionPane.showMessageDialog(new JFrame(), "Deleted successfully!");
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+		});
+		
+		iidT.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+			       if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			          delete.doClick();
+			       }
+			    }
+			    public void keyReleased(KeyEvent e) {}
+			    public void keyTyped(KeyEvent e) {}
+		});
+		
+		frame.add(iidT);
+		frame.add(prompt);
+		frame.add(delete);		
+	}
 }
