@@ -121,7 +121,7 @@ public class Student {
 				frame.getContentPane().removeAll();
 				frame.repaint();
 				frame.add(back);
-				internshipsAppliedDeleted(frame);
+				internshipsAppliedDelete(frame);
 			}
 		});
 		
@@ -571,7 +571,7 @@ public class Student {
 		}
 	}
 	
-	public void internshipsAppliedDeleted(JFrame frame) {
+	public void internshipsAppliedDelete(JFrame frame) {
 		JTextField iidT = new JTextField();
 		iidT.setBounds(150, 150, 150, 40);
 		iidT.setFont(new Font("", Font.PLAIN, 16));
