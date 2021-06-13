@@ -127,17 +127,14 @@ public class NewManagerProfile {
 			message = message + "Phone number cannot be empty!\n";
 		}
 		else {
-			try {
-				Integer.parseInt(phone);
-				if (phone.length() != 10) {
-					message += "Phone number must have exactly 10 digits!\n";
+			for(char c : phone.toCharArray()) {
+				if (!Character.isDigit(c)) {
+					message = message + "Phone number cannot have alphabets or special characters!\n";
+					break;
 				}
 			}
-			catch (NumberFormatException e) {
-				message += "Phone number cannot have alphabets or special characters!\n";
-			}
-			catch (Exception e) {
-				message += "Phone number must have exactly 10 digits!\n";
+			if (phone.length() != 10) {
+					message += "Phone number must have exactly 10 digits!\n";
 			}
 		}
 		
