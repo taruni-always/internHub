@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public class HomePage {
 	public JFrame frame;
-	public JLabel title, prompt, marketting;
+	public JLabel title, prompt, marketing;
 	public JButton login, signup;
 	
 	public HomePage(JFrame frame) {
@@ -53,9 +53,9 @@ public class HomePage {
 			}
 		});
 		
-		marketting = new JLabel( "<html><p style=\"text-align:center;\" bgcolor=\"yellow\">Looking for an internship? Need interns to work for your project? We got you! <br>Providing internship opportunities for students across the globe!<br> Connecting project managers to interns everywhere!</p></html>" );
+		marketing = new JLabel( "<html><p style=\"text-align:center;\" bgcolor=\"yellow\">Looking for an internship? Need interns to work for your project? We got you! <br>Providing internship opportunities for students across the globe!<br> Connecting project managers to interns everywhere!</p></html>" );
 		marketting.setBounds(18, 320, 600, 80);
-		frame.add(marketting);
+		frame.add(marketing);
 		
 		frame.setSize(500, 440);
 		frame.setLayout(null);
