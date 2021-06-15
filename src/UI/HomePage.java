@@ -54,7 +54,7 @@ public class HomePage {
 		});
 		
 		marketing = new JLabel( "<html><p style=\"text-align:center;\" bgcolor=\"yellow\">Looking for an internship? Need interns to work for your project? We got you! <br>Providing internship opportunities for students across the globe!<br> Connecting project managers to interns everywhere!</p></html>" );
-		marketting.setBounds(18, 320, 600, 80);
+		marketing.setBounds(18, 320, 600, 80);
 		frame.add(marketing);
 		
 		frame.setSize(500, 440);
