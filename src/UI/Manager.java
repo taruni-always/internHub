@@ -401,7 +401,7 @@ public class Manager {
 						else {
 							rs = s.executeQuery("select * from internships where internship_id = " + iid + " and manager_id = '" + manager_id + "'");
 							if (!rs.next()) {
-								message = message + "This internship_id has not been posted by you, you cannot delete it!\n";
+								message = message + "This internship_id has not been posted by you, you cannot approve it!\n";
 							}
 							else {
 								iidexists = true;
