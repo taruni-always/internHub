@@ -140,6 +140,16 @@ public class NewUserSignup {
 				}
 			}
 		}
+		
+		if (lname.length() != 0) {
+			for(char c : fname.toCharArray()) {
+				if (!Character.isAlphabetic(c)) {
+					message = message + "Last name cannot have digits or special characters!\n";
+					break;
+				}
+			}
+		}
+		
 		if (message.length() != 0) {
 			JOptionPane.showMessageDialog(new JFrame(), message, "error", JOptionPane.ERROR_MESSAGE);
 		}
