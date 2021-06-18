@@ -95,7 +95,12 @@ public class LoginWithUsername {
 				}
 				if (flag) {
 					frame.getContentPane().removeAll();
-					new Student(frame, username);
+					if (typeOfUser.equals("student")) {
+						new Student(frame, username);
+					}
+					else {
+						new Manager(frame, username);
+					}
 				}
 				else {
 					JOptionPane.showMessageDialog(new JFrame(), "Username doesnot exist! Please enter a valid username!", "error", JOptionPane.ERROR_MESSAGE);
