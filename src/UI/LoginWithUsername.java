@@ -82,6 +82,10 @@ public class LoginWithUsername {
 			boolean flag = false;
 			if (typeOfUser.equals("student")) {
 				rs = s.executeQuery("select student_id from students");
+			}
+			else {
+				rs = s.executeQuery("select manager_id from projectmanagers");
+			}
 				while(rs.next()) {
 					String user = rs.getString(1);
 					if (user.equals(username)) {
@@ -96,23 +100,7 @@ public class LoginWithUsername {
 				else {
 					JOptionPane.showMessageDialog(new JFrame(), "Username doesnot exist! Please enter a valid username!", "error", JOptionPane.ERROR_MESSAGE);
 				}				
-			}
-			else {
-				rs = s.executeQuery("select manager_id from projectmanagers");
-				while(rs.next()) {
-					if (rs.getString(1).equals(username)) {
-						flag = true;
-						break;
-					}
-				}
-				if (flag) {
-					frame.getContentPane().removeAll();
-						new Manager(frame, username);
-				}
-				else {
-					JOptionPane.showMessageDialog(new JFrame(), "Username doesnot exist! Please enter a valid username!", "error", JOptionPane.ERROR_MESSAGE);
-				}
-			}
+			
 			s.close();
 			con.close();
 		} 
