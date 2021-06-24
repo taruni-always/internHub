@@ -293,8 +293,8 @@ public class Manager {
 		table.setBounds(100, 70, 250, 100);
 		table.getColumnModel().getColumn(0).setPreferredWidth(40);
 		table.getColumnModel().getColumn(1).setPreferredWidth(180);
-		table.getColumnModel().getColumn(2).setPreferredWidth(60);
-		table.getColumnModel().getColumn(3).setPreferredWidth(90);
+		table.getColumnModel().getColumn(2).setPreferredWidth(100);
+		table.getColumnModel().getColumn(3).setPreferredWidth(150);
 		table.getColumnModel().getColumn(4).setPreferredWidth(250);
 		table.setFont(new Font("", Font.PLAIN, 15));
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
