@@ -162,10 +162,12 @@ public class NewUserSignup {
 				frame.getContentPane().removeAll();
 				if (userType.equals("student")){
 					s.executeQuery("Insert into students values('" + uname + "', '" + fname + "', '" +lname + "')" );
+					frame.repaint();
 					new NewStudentProfile(frame, userName.getText());
 				}
 				else {
 					s.executeQuery("Insert into projectmanagers values('" + uname + "', '" + fname + "', '" +lname + "')" );
+					frame.repaint();
 					new NewManagerProfile(frame, userName.getText());
 				}
 				s.executeQuery("commit");

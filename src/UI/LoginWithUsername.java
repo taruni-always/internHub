@@ -96,9 +96,11 @@ public class LoginWithUsername {
 				if (flag) {
 					frame.getContentPane().removeAll();
 					if (typeOfUser.equals("student")) {
+						frame.repaint();
 						new Student(frame, username);
 					}
 					else {
+						frame.repaint();
 						new Manager(frame, username);
 					}
 				}

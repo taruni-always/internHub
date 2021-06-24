@@ -37,9 +37,11 @@ public class UserLoginSignup {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
 				if (userType.equals("login")) {
+					frame.repaint();
 					new LoginWithUsername(frame, "student");
 				}
 				else {
+					frame.repaint();
 					new NewUserSignup(frame, "student");
 				}
 				
@@ -56,9 +58,11 @@ public class UserLoginSignup {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
 				if (userType.equals("login")) {
+					frame.repaint();
 					new LoginWithUsername(frame, "manager");
 				}
 				else {
+					frame.repaint();
 					new NewUserSignup(frame, "manager");
 				}
 			}
@@ -73,6 +77,7 @@ public class UserLoginSignup {
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
+				frame.repaint();
 				new HomePage(frame);
 			}
 		});

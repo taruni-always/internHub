@@ -158,6 +158,7 @@ public class Manager {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
 				frame.setJMenuBar(null);
+				frame.repaint();
 				new HomePage(frame);
 			}
 		});

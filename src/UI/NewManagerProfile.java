@@ -99,6 +99,7 @@ public class NewManagerProfile {
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.getContentPane().removeAll();
+				frame.repaint();
 				new HomePage(frame);
 			}
 		});
@@ -168,6 +169,7 @@ public class NewManagerProfile {
 				e1.printStackTrace();
 			}
 			frame.getContentPane().removeAll();
+			frame.repaint();
 			new Manager(frame, mid);
 		}
 	}
